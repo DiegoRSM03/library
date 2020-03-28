@@ -6,9 +6,17 @@
 	<title>Biblioteca DRSM</title>
 </head>
 <body>
-	
+	<header>
+		<h1>Biblioteca DRSM</h1>
+		<div id="nav">
+			<a href="">Home</a>
+			<a href="">Acerca</a>
+			<a href="">Iniciar Sesión</a>
+			<a href="">Registrarse</a>
+			<a href="">Contacto</a>
+		</div>
+	</header>
 
-	<script src="view/assets/js/jquery.js"></script>
 	<script src="view/assets/js/app.js"></script>
 </body>
 </html>
