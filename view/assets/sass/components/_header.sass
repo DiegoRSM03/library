@@ -17,14 +17,22 @@ header
 		font-weight: normal
 
 	nav
-		button
+		a
 			color: $GRAY
 			background-color: rgba(0, 0, 0, 0)
 			font-family: 'Roboto'
 			font-size: 1rem
+			text-decoration: none
 
+			cursor: pointer
 			border: none
 			margin: 0 1rem
 
 			&:hover
-				color: lighten($GRAY, 5)
+				color: lighten($GRAY, 15)
+
+		.nav-button-selected
+			color: $WHITE
+
+			&:hover
+				color: $WHITE

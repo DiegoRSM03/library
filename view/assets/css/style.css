@@ -41,12 +41,100 @@ header {
     font-family: 'Roboto Bold';
     font-size: 1.5rem;
     font-weight: normal; }
-  header nav button {
+  header nav a {
     color: #A1A1A1;
     background-color: rgba(0, 0, 0, 0);
     font-family: 'Roboto';
     font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
     border: none;
     margin: 0 1rem; }
-    header nav button:hover {
-      color: #aeaeae; }
+    header nav a:hover {
+      color: #c7c7c7; }
+  header nav .nav-button-selected {
+    color: #F2F2F2; }
+    header nav .nav-button-selected:hover {
+      color: #F2F2F2; }
+
+.banner {
+  background-color: #021A25;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100vw;
+  height: 100vh; }
+
+.general-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #D7F205;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid #D7F205;
+  border-radius: 5px;
+  transition: .3s linear 0s;
+  cursor: pointer;
+  font-family: 'Roboto BLACK';
+  font-size: 1.2rem;
+  width: 18rem;
+  padding: .5rem 2rem; }
+  .general-button:hover {
+    color: #021A25;
+    background-color: #D7F205; }
+  .general-button [class^="flaticon-"]:before, .general-button [class*=" flaticon-"]:before,
+  .general-button [class^="flaticon-"]:after, .general-button [class*=" flaticon-"]:after {
+    font-size: 1.7rem; }
+
+.title {
+  color: #F2F2F2;
+  font-family: 'Roboto Black';
+  font-size: 3.5rem;
+  font-weight: normal; }
+
+.subtitle {
+  color: #A1A1A1;
+  font-family: 'Roboto';
+  font-size: 1.2rem;
+  font-weight: normal;
+  margin-bottom: 1.5rem; }
+
+#banner-home {
+  background-image: url(../img/banner_devon_divine.jpg); }
+  #banner-home .welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    background-image: linear-gradient(to right, #021A25 10%, rgba(2, 26, 37, 0.8) 50%, rgba(2, 26, 37, 0.4) 80%, rgba(250, 250, 250, 0.1));
+    width: 100%;
+    height: 100%;
+    padding-left: 5rem; }
+    #banner-home .welcome .buttons {
+      padding-top: 5rem;
+      display: flex; }
+      #banner-home .welcome .buttons button[name="sign-in"] {
+        margin-right: 5rem; }
+
+#banner-sign .background-opaque {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  background-color: rgba(20, 60, 80, 0.2);
+  width: 100%;
+  height: 100%;
+  padding: 0 5rem; }
+  #banner-sign .background-opaque figure,
+  #banner-sign .background-opaque form {
+    width: 100%;
+    height: 100%;
+    padding: 3rem 0 0 0; }
+  #banner-sign .background-opaque form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center; }
+    #banner-sign .background-opaque form div {
+      display: flex;
+      align-items: center;
+      border: 2px solid #D7F205; }
