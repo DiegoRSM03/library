@@ -1,14 +1,6 @@
-
 document.addEventListener('DOMContentLoaded', () => {
 
 	//------------------------------------------PINTANDO LA SECCION ACTUAL DEL USUARIO
-	var header = [
-		document.getElementById('home'),
-		document.getElementById('about'),
-		document.getElementById('sign-in'),
-		document.getElementById('sign-up'),
-		document.getElementById('contact')
-	];
 	var sign = new URLSearchParams(window.location.search);
 	if (sign.get('sign') == 'in') {
 		document.getElementById('sign-in').style.color = '#FAFAFA';
@@ -25,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	// setInterval(() => fetchBackground(), 8000);
 
 	//------------------------------------------OBTIENE LOS PRIMEROS 5 LIBROS DE LA BASE DE DATOS
-	fetchRecomendations();
+	fetchSuggestions();
 	
 });
 
@@ -59,7 +51,7 @@ async function fetchBackground () {
 
 }
 
-async function fetchRecomendations () {
+async function fetchSuggestions () {
 
 	let response = await fetch('http://localhost/5-library/controller/suggestions.php', {
 		method: 'POST',
@@ -83,7 +75,6 @@ async function fetchRecomendations () {
 		let tdYear = document.createElement('td');
 		tdYear.innerHTML = suggestionsInfo[i].year;
 		tr.appendChild(tdYear);
-
 	}
 
 }

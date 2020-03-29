@@ -5,8 +5,7 @@
 	background-repeat: no-repeat
 	background-position: center
 
-	width: 100vw
-	height: 100vh
+	width: 100%
 	overflow: hidden
 
 .general-button
@@ -36,18 +35,21 @@
 	[class^="flaticon-"]:after, [class*=" flaticon-"]:after
 		font-size: 1.7rem
 
+.title,
+.subtitle
+	font-weight: normal
+	cursor: default
+
 .title
 	color: $WHITE
 	font-family: 'Roboto Black'
 	font-size: 2.6rem
-	font-weight: normal
 	padding-bottom: 3rem
 
 .subtitle
 	color: $GRAY
 	font-family: 'Roboto'
 	font-size: 1.2rem
-	font-weight: normal
 	margin-bottom: 1.5rem
 
 [id^=form-sign-]
@@ -71,19 +73,30 @@
 			font-size: 1.3rem
 			padding: 0 1rem
 
-		input
+		input,
+		textarea
 			color: $WHITE
 			background-color: rgba(0, 0, 0, 0)
-			font-size: 1rem
+			font-family: 'Roboto'
 			border: none
-
 			width: 100%
-			height: 2rem
+			font-size: 1rem
 
 			&:focus
 				outline: none
 			&::placeholder
 				color: $GRAY
+
+		input
+			height: 2rem
+
+
+		textarea
+			resize: none
+			line-height: 1.5rem
+			height: 40vh
+			padding: .5rem 0
+
 
 	button
 		color: $BLACK
@@ -107,6 +120,7 @@
 //-----------------------------BANNER PARA INICIO	
 #banner-home
 	background-image: url(../img/banner_devon_divine.jpg)
+	height: 110vh
 
 	.welcome
 		display: flex
@@ -119,7 +133,7 @@
 		width: 100%
 		height: 100%
 		padding-left: 5rem
-		
+
 		.buttons
 			display: flex
 
@@ -131,11 +145,13 @@
 
 //-----------------------------BANNER PARA INICIO O REGISTRO DE SESIÓN
 #banner-sign
+	height: 100vh
+
 	.background-opaque
 		display: grid
 		grid-template-columns: repeat(2, 1fr)
 		grid-template-rows: 1fr
-		
+
 		background-color: rgba(2, 26, 37, .8)
 		width: 100%
 		height: 100%
@@ -176,4 +192,56 @@
 						td
 							padding: .3rem 0 .3rem 1rem
 
+//-----------------------------BANNER PARA CONTACTO
+#banner-contact
+	background-image: url('../img/contact_fang_wei_lin.jpg')
+	height: 110vh
 
+	.background-opaque
+		display: grid
+		grid-template-columns: repeat(2, 1fr)
+		grid-template-rows: 1fr
+
+		background-color: rgba(2, 26, 37, .9)
+		width: 100%
+		height: 100%
+		padding: 5rem 5rem
+
+		[class^=contact-]
+			details
+				margin-bottom: 3rem
+
+				summary:focus
+					outline: none
+
+				.subtitle
+					margin-bottom: inherit
+					margin-bottom: .8rem
+
+				>div
+					display: flex
+					justify-content: flex-start
+
+					color: $GRAY
+					padding-left: 3rem
+					margin-bottom: .5rem
+
+					cursor: default
+
+					&:hover
+						color: $GREEN
+
+					a
+						color: $GRAY
+						font-family: 'Roboto Light'
+						text-decoration: none
+						margin-left: .8rem
+
+						&:hover
+							color: $GREEN
+
+		.contact-info
+
+		.contact-mail
+			.title
+				text-align: right
