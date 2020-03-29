@@ -1,11 +1,41 @@
-const URI = 'https://api.unsplash.com/photos/random/?';
-const apiKey = 'client_id=dnjjEBseQMoOKvDUFapG1gD60j2fFPOSMdgfX8TcNNc';
-const count = '&count=1';
-const query = '&query=desktop landscapes night';
-const URL = URI + apiKey + count + query;
+
+document.addEventListener('DOMContentLoaded', () => {
+
+	//------------------------------------------PINTANDO LA SECCION ACTUAL DEL USUARIO
+	var header = [
+		document.getElementById('home'),
+		document.getElementById('about'),
+		document.getElementById('sign-in'),
+		document.getElementById('sign-up'),
+		document.getElementById('contact')
+	];
+	var sign = new URLSearchParams(window.location.search);
+	if (sign.get('sign') == 'in') {
+		document.getElementById('sign-in').style.color = '#FAFAFA';
+		document.getElementById('form-sign-in').style.paddingTop = '10rem';
+		document.getElementsByClassName('suggestions')[0].style.paddingTop = '10rem';
+	} else {
+		document.getElementById('sign-up').style.color = '#FAFAFA';
+		document.getElementById('form-sign-up').style.paddingTop = '3rem';
+		document.getElementsByClassName('suggestions')[0].style.paddingTop = '3rem';
+	}
+	
+	//------------------------------------------CAMBIA FONDO DE PANTALLA
+	// fetchBackground();
+	// setInterval(() => fetchBackground(), 8000);
+
+	//------------------------------------------OBTIENE LOS PRIMEROS 5 LIBROS DE LA BASE DE DATOS
+	fetchRecomendations();
+	
+});
 
 async function fetchBackground () {
 
+	let URI = 'https://api.unsplash.com/photos/random/?';
+	let apiKey = 'client_id=dnjjEBseQMoOKvDUFapG1gD60j2fFPOSMdgfX8TcNNc';
+	let count = '&count=1';
+	let query = '&query=desktop landscapes night';
+	let URL = URI + apiKey + count + query;
 	let backgroundInfo = [];
 
 	let response = await fetch(URL, {
@@ -13,7 +43,7 @@ async function fetchBackground () {
 		mode: 'cors'
 	});
 	let data = await response.json();
-
+	
 	backgroundInfo.push({
 		img: {
 			url: data[0].urls.regular
@@ -57,18 +87,3 @@ async function fetchRecomendations () {
 	}
 
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-
-	// CAMBIA FONDO DE PANTALLA
-	// fetchBackground();
-	// setInterval(() => fetchBackground(), 8000);
-
-	// OBTIENE LOS PRIMEROS 5 LIBROS DE LA BASE DE DATOS
-	fetchRecomendations();
-
-	// PINTANDO DE BLANCO EL BOTON DE "INICIAR SESIÓN" EN LA BARRA DE NAVEGACION
-	var currentSection = document.getElementsByTagName('a')[2]
-	currentSection.classList.add('nav-button-selected');
-	
-});

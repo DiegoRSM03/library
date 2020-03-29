@@ -4,14 +4,15 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+	<link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" href="assets/iconfonts/flaticon.css">
 	<link rel="stylesheet" href="assets/css/style.css">
 
 	<?php
-	if (isset($_GET['in-up'])) {
-		($_GET['in-up'] == 'in') ? print('<title>Inicia Sesión</title>') : print('<title>Regístrate</title>');
+	if (isset($_GET['sign'])) {
+		($_GET['sign'] == 'in') ? print('<title>Inicia Sesión</title>') : print('<title>Regístrate</title>');
 	} else {
-		header('Location: ./../index.php');
+		header('Location: http://localhost/5-library/index.php');
 	}
 	?>
 </head>
@@ -35,9 +36,9 @@
 			</figure>	
 			<!-- FORMULARIO SIGN IN O SIGN UP -->
 			<?php
-			if ($_GET['in-up'] == 'in') {
+			if ($_GET['sign'] == 'in') {
 				require('components/sign_in.php');
-			} else {
+			} else if ($_GET['sign'] == 'up') {
 				require('components/sign_up.php');
 			}
 			?>
