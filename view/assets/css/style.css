@@ -62,8 +62,7 @@ header {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
   overflow: hidden; }
 
 .general-button {
@@ -87,18 +86,21 @@ header {
   .general-button [class^="flaticon-"]:after, .general-button [class*=" flaticon-"]:after {
     font-size: 1.7rem; }
 
+.title,
+.subtitle {
+  font-weight: normal;
+  cursor: default; }
+
 .title {
   color: #F2F2F2;
   font-family: 'Roboto Black';
   font-size: 2.6rem;
-  font-weight: normal;
   padding-bottom: 3rem; }
 
 .subtitle {
   color: #A1A1A1;
   font-family: 'Roboto';
   font-size: 1.2rem;
-  font-weight: normal;
   margin-bottom: 1.5rem; }
 
 [id^=form-sign-] {
@@ -118,17 +120,27 @@ header {
       color: #D7F205;
       font-size: 1.3rem;
       padding: 0 1rem; }
-    [id^=form-sign-] div input {
+    [id^=form-sign-] div input,
+    [id^=form-sign-] div textarea {
       color: #F2F2F2;
       background-color: rgba(0, 0, 0, 0);
-      font-size: 1rem;
+      font-family: 'Roboto';
       border: none;
       width: 100%;
-      height: 2rem; }
-      [id^=form-sign-] div input:focus {
+      font-size: 1rem; }
+      [id^=form-sign-] div input:focus,
+      [id^=form-sign-] div textarea:focus {
         outline: none; }
-      [id^=form-sign-] div input::placeholder {
+      [id^=form-sign-] div input::placeholder,
+      [id^=form-sign-] div textarea::placeholder {
         color: #A1A1A1; }
+    [id^=form-sign-] div input {
+      height: 2rem; }
+    [id^=form-sign-] div textarea {
+      resize: none;
+      line-height: 1.5rem;
+      height: 40vh;
+      padding: .5rem 0; }
   [id^=form-sign-] button {
     color: #021A25;
     background-color: #D7F205;
@@ -145,7 +157,8 @@ header {
       background-color: #97BF04; }
 
 #banner-home {
-  background-image: url(../img/banner_devon_divine.jpg); }
+  background-image: url(../img/banner_devon_divine.jpg);
+  height: 110vh; }
   #banner-home .welcome {
     display: flex;
     flex-direction: column;
@@ -162,36 +175,124 @@ header {
       #banner-home .welcome .buttons a[name="sign-in"] {
         margin-right: 5rem; }
 
-#banner-sign .background-opaque {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 1fr;
-  background-color: rgba(2, 26, 37, 0.8);
-  width: 100%;
-  height: 100%;
-  padding: 3rem 5rem; }
-  #banner-sign .background-opaque figure,
-  #banner-sign .background-opaque form {
+#banner-sign {
+  height: 100vh; }
+  #banner-sign .background-opaque {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    background-color: rgba(2, 26, 37, 0.8);
     width: 100%;
     height: 100%;
-    padding: 3rem 0 0 0; }
-  #banner-sign .background-opaque figure {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start; }
-    #banner-sign .background-opaque figure table {
-      width: 80%;
-      font-family: 'Roboto';
-      cursor: default; }
-      #banner-sign .background-opaque figure table thead tr {
-        color: #b2b2b2;
-        background-color: rgba(2, 26, 37, 0.9); }
-      #banner-sign .background-opaque figure table tbody tr {
+    padding: 3rem 5rem; }
+    #banner-sign .background-opaque figure,
+    #banner-sign .background-opaque form {
+      width: 100%;
+      height: 100%;
+      padding: 3rem 0 0 0; }
+    #banner-sign .background-opaque figure {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start; }
+      #banner-sign .background-opaque figure table {
+        width: 80%;
+        font-family: 'Roboto';
+        cursor: default; }
+        #banner-sign .background-opaque figure table thead tr {
+          color: #b2b2b2;
+          background-color: rgba(2, 26, 37, 0.9); }
+        #banner-sign .background-opaque figure table tbody tr {
+          color: #A1A1A1;
+          background-color: rgba(2, 26, 37, 0.3);
+          font-size: 1rem; }
+          #banner-sign .background-opaque figure table tbody tr:hover td {
+            color: #D7F205; }
+          #banner-sign .background-opaque figure table tbody tr td {
+            padding: .3rem 0 .3rem 1rem; }
+
+#banner-contact {
+  background-image: url("../img/contact_fang_wei_lin.jpg");
+  height: 110vh; }
+  #banner-contact .background-opaque {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    background-color: rgba(2, 26, 37, 0.9);
+    width: 100%;
+    height: 100%;
+    padding: 5rem 5rem; }
+    #banner-contact .background-opaque [class^=contact-] details {
+      margin-bottom: 3rem; }
+      #banner-contact .background-opaque [class^=contact-] details summary:focus {
+        outline: none; }
+      #banner-contact .background-opaque [class^=contact-] details .subtitle {
+        margin-bottom: inherit;
+        margin-bottom: .8rem; }
+      #banner-contact .background-opaque [class^=contact-] details > div {
+        display: flex;
+        justify-content: flex-start;
         color: #A1A1A1;
-        background-color: rgba(2, 26, 37, 0.3);
-        font-size: 1rem; }
-        #banner-sign .background-opaque figure table tbody tr:hover td {
+        padding-left: 3rem;
+        margin-bottom: .5rem;
+        cursor: default; }
+        #banner-contact .background-opaque [class^=contact-] details > div:hover {
           color: #D7F205; }
-        #banner-sign .background-opaque figure table tbody tr td {
-          padding: .3rem 0 .3rem 1rem; }
+        #banner-contact .background-opaque [class^=contact-] details > div a {
+          color: #A1A1A1;
+          font-family: 'Roboto Light';
+          text-decoration: none;
+          margin-left: .8rem; }
+          #banner-contact .background-opaque [class^=contact-] details > div a:hover {
+            color: #D7F205; }
+    #banner-contact .background-opaque .contact-mail .title {
+      text-align: right; }
+
+#about-section {
+  background-image: linear-gradient(to bottom, #021A25 40%, #212901); }
+  #about-section .info {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    width: 100%;
+    padding: 5rem 5rem;
+    overflow: hidden; }
+    #about-section .info > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 5rem 0; }
+      #about-section .info > div [class^=img-] {
+        width: 40vw;
+        position: relative;
+        border-radius: 5px;
+        overflow: hidden; }
+        #about-section .info > div [class^=img-] img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover; }
+        #about-section .info > div [class^=img-] a {
+          position: absolute;
+          z-index: 2;
+          bottom: 1rem;
+          left: 1rem; }
+      #about-section .info > div .lore-ceo {
+        text-align: right; }
+      #about-section .info > div .lore-team {
+        text-align: left; }
+      #about-section .info > div [class^=lore-] .title {
+        color: inherit;
+        color: #D7F205;
+        padding: inherit;
+        padding-bottom: 2rem; }
+      #about-section .info > div [class^=lore-] .subtitle {
+        color: inherit;
+        color: #F2F2F2; }
+      #about-section .info > div [class^=lore-] p {
+        color: #A1A1A1;
+        font-family: 'Roboto Light';
+        font-size: .9rem;
+        width: 40vw;
+        margin-top: 3rem;
+        line-height: 1.5rem; }

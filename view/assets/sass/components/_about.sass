@@ -1,0 +1,60 @@
+#about-section
+	background-image: linear-gradient(to bottom, $BLACK 40%, darken($GREEN_DARK, 30))
+
+	.info
+		display: grid
+		grid-template-columns: 1fr
+		grid-template-rows: repeat(2, 1fr)
+		width: 100%
+		padding: 5rem 5rem
+		overflow: hidden
+
+		>div
+			display: flex
+			align-items: center
+			justify-content: space-between
+
+			width: 100%
+			padding: 5rem 0
+
+			[class^=img-]
+				width: 40vw
+				position: relative
+				border-radius: 5px
+				overflow: hidden
+
+				img
+					width: 100%
+					height: 100%
+					object-fit: cover
+
+				a
+					position: absolute
+					z-index: 2
+					bottom: 1rem
+					left: 1rem
+
+			.lore-ceo
+				text-align: right
+			.lore-team
+				text-align: left
+
+			[class^=lore-]
+				.title
+					color: inherit
+					color: $GREEN
+					padding: inherit
+					padding-bottom: 2rem
+
+				.subtitle
+					color: inherit
+					color: $WHITE
+
+				p
+					color: $GRAY
+					font-family: 'Roboto Light'
+					font-size: .9rem
+					width: 40vw
+					margin-top: 3rem
+					line-height: 1.5rem
+				
