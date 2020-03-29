@@ -1,7 +1,5 @@
 <?php
 
-(isset($_GET['sign-in'])) ? setcookie('sign', 'in', time()+300, '/') : setcookie('sign','up', time()+300, '/');
-header('Location: ./../view/sign.php');
-
+($_GET['in-up'] == 'in') ? header('Location: ./../view/sign.php?in-up=in') : header('Location: ./../view/sign.php?in-up=up');
 
 ?>
