@@ -1,7 +1,16 @@
-async function fetchContent(archivo) {
+document.addEventListener('DOMContentLoaded', () => {
+	
+	var home = document.getElementById('home');
+	var about = document.getElementById('about');
+	var signIn = document.getElementById('sign-in');
+	var signUp = document.getElementById('sign-up');
+	var contact = document.getElementById('contact');
 
-	let response = await fetch('http://localhost/5-library/controller/' + archivo);
-	let data = await response.json();
-	console.log(data);
+	var header = [home, about, signIn, signUp, contact];
+	for (let i=0 ; i<header.length ; i++) {
+		i.addEventListener('onclick', () => {
+			
+		});
+	}
 
-}
+});
