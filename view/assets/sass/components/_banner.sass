@@ -1,0 +1,114 @@
+//-----------------------------PUNTOS EN COMUN ENTRE BANNERS(PARA AHORRAR TAMAÑO)
+.banner
+	background-color: $BLACK
+	background-size: cover
+	background-repeat: no-repeat
+	background-position: center
+
+	width: 100vw
+	height: 100vh
+
+.general-button
+	display: flex
+	align-items: center
+	justify-content: space-between
+
+	color: $GREEN
+	background-color: rgba(0, 0, 0, 0)
+
+	border: 1px solid $GREEN
+	border-radius: 5px
+	transition: .3s linear 0s
+	cursor: pointer
+
+	font-family: 'Roboto BLACK'
+	font-size: 1.2rem
+
+	width: 18rem
+	padding: .5rem 2rem
+	&:hover
+		color: $BLACK
+		background-color: $GREEN
+
+	[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+	[class^="flaticon-"]:after, [class*=" flaticon-"]:after
+		font-size: 1.7rem
+
+.title
+	color: $WHITE
+	font-family: 'Roboto Black'
+	font-size: 3.5rem
+	font-weight: normal
+
+.subtitle
+	color: $GRAY
+	font-family: 'Roboto'
+	font-size: 1.2rem
+	font-weight: normal
+	margin-bottom: 1.5rem
+
+
+
+//-----------------------------BANNER PARA INICIO	
+#banner-home
+	background-image: url(../img/banner_devon_divine.jpg)
+
+	.welcome
+		display: flex
+		flex-direction: column
+		align-items: start
+		justify-content: center
+
+		background-image: linear-gradient(to right, $BLACK 10%, rgba(2, 26, 37, .8) 50%, rgba(2, 26, 37, .4) 80%, rgba(250, 250, 250, .1))
+
+		width: 100%
+		height: 100%
+		padding-left: 5rem
+		
+		.buttons
+			padding-top: 5rem
+			display: flex
+
+			button[name="sign-in"]
+				margin-right: 5rem
+
+
+//----------------------BANNER PARA INICIO O REGISTRO DE SESIÓN
+#banner-sign
+	.background-opaque
+		display: grid
+		grid-template-columns: repeat(2, 1fr)
+		grid-template-rows: 1fr
+		
+		background-color: rgba(20, 60, 80, .2)
+		width: 100%
+		height: 100%
+		padding: 0 5rem
+
+		figure,
+		form
+			width: 100%
+			height: 100%
+
+			padding: 3rem 0 0 0
+
+		figure
+			
+
+			legend
+				ul
+					li
+
+		form
+			display: flex
+			flex-direction: column
+			align-items: flex-end
+			justify-content: center
+
+			div
+				display: flex
+				align-items: center
+
+				border: 2px solid $GREEN
+
+
