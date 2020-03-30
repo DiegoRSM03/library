@@ -11,7 +11,10 @@
 	<title>Contáctenos</title>
 </head>
 <body>
-	<?php require('components/header.php'); ?>
+	<?php 
+		require('components/header.php');
+		require('components/sendMail.php');
+	?>
 	<div id="banner-contact" class="banner">
 		<div class="background-opaque">
 			<div class="contact-info">
@@ -29,7 +32,7 @@
 				<details class="team">
 					<summary class="subtitle"><span class="flaticon-friends"></span> Equipo</summary>
 					<div class="ceo"><span class="flaticon-user"></span><a href="#">CEO / Cristian Gomez</a></div>
-					<div class="founder"><span class="flaticon-user"></span><a href="#">FUNDADOS / Alejo Sanchez</a></div>
+					<div class="founder"><span class="flaticon-user"></span><a href="#">FUNDADOR / Alejo Sanchez</a></div>
 					<div class="co-founder"><span class="flaticon-user"></span><a href="#">CO-FUNDADOR / Matias Acosta</a></div>
 				</details>
 			</div>

@@ -4,9 +4,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="assets/iconfonts/flaticon.css">
-	<link rel="stylesheet" href="assets/css/style.css">
+	<link rel="shortcut icon" href="../assets/img/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="../assets/iconfonts/flaticon.css">
+	<link rel="stylesheet" href="../assets/css/style.css">
 
 	<?php
 	if (isset($_GET['sign'])) {
@@ -17,7 +17,10 @@
 	?>
 </head>
 <body>
-	<?php require('components/header.php'); ?>
+	<?php 
+		require('../components/header.php'); 
+		require('sendSign.php');
+	?>
 
 	<div id="banner-sign" class="banner">
 		<div class="background-opaque">
@@ -37,13 +40,13 @@
 			<!-- FORMULARIO SIGN IN O SIGN UP -->
 			<?php
 			if ($_GET['sign'] == 'in') {
-				require('components/sign_in.php');
+				require('sign_in.php');
 			} else if ($_GET['sign'] == 'up') {
-				require('components/sign_up.php');
+				require('sign_up.php');
 			}
 			?>
 		</div>
 	</div>
-	<script src="assets/js/sign.js"></script>
+	<script src="../assets/js/sign.js"></script>
 </body>
 </html>

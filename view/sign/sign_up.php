@@ -28,5 +28,5 @@
 		<span class="flaticon-door-key"></span>
 		<input type="password" id="password" placeholder="Contraseña" required>
 	</div>
-	<button type="submit" class="to-form-php">VALIDAR</button>
+	<button type="submit" class="to-form-sign-up">VALIDAR</button>
 </form>
