@@ -27,7 +27,7 @@ class Connection {
 
 		}
 	}
-	public static function disconnect ($dbh) {
+	public static function disconnect (&$dbh) {
 		$dbh = null;
 	}
 

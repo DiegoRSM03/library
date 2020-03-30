@@ -32,7 +32,8 @@ header {
   justify-content: space-between;
   background-color: #021A25;
   padding: 1.3rem 5rem;
-  position: absolute;
+  position: fixed;
+  z-index: 3;
   top: 0;
   left: 0;
   right: 0; }
@@ -108,6 +109,19 @@ header {
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-start; }
+  [id^=form-sign-] label {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #A1A1A1;
+    font-family: 'Roboto';
+    width: 100%;
+    max-width: 30rem;
+    margin-bottom: 2.5rem; }
+    [id^=form-sign-] label input {
+      width: 1.3rem;
+      height: 1.3rem;
+      margin: 0 1rem; }
   [id^=form-sign-] div {
     display: flex;
     align-items: center;
@@ -154,7 +168,7 @@ header {
     max-width: 30rem;
     padding: .5rem 0; }
     [id^=form-sign-] button:hover {
-      background-color: #97BF04; }
+      background-color: #546807; }
 
 #banner-home {
   background-image: url(../img/banner_devon_divine.jpg);
@@ -249,7 +263,7 @@ header {
       text-align: right; }
 
 #about-section {
-  background-image: linear-gradient(to bottom, #021A25 40%, #212901); }
+  background-image: linear-gradient(to bottom, #021A25 40%, black); }
   #about-section .info {
     display: grid;
     grid-template-columns: 1fr;
@@ -296,3 +310,35 @@ header {
         width: 40vw;
         margin-top: 3rem;
         line-height: 1.5rem; }
+
+.pending,
+.successful,
+.failure {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 5rem;
+  padding: 0 5rem;
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(-100%);
+  transition: .7 ease 0s; }
+  .pending p,
+  .successful p,
+  .failure p {
+    color: #F2F2F2;
+    font-family: 'Roboto Black'; }
+
+.pending {
+  background-color: #C3A50C;
+  z-index: inherit;
+  z-index: 4; }
+
+.successful {
+  background-color: #546807; }
+
+.failure {
+  background-color: #680707; }

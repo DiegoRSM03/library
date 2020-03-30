@@ -1,0 +1,32 @@
+.pending,
+.successful,
+.failure
+	display: flex
+	align-items: center
+	justify-content: space-evenly
+
+	height: 5rem
+	padding: 0 5rem
+	position: fixed
+	z-index: 5
+	top: 0
+	left: 0
+	right: 0
+	transform: translateY(-100%)
+	transition: .7 ease 0s
+
+	p
+		color: $WHITE
+		font-family: 'Roboto Black'
+
+.pending
+	background-color: $YELLOW
+	z-index: inherit
+	z-index: 4
+	
+.successful
+	background-color: $GREEN_DARK
+	
+
+.failure
+	background-color: $RED
