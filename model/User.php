@@ -26,6 +26,43 @@ class User {
 
 	}
 
+	public static function addUser ($infoUser) {
+
+		$added = array();
+
+		try {
+
+			$dbh = Connection::connect();
+	
+			$sql = 'INSERT INTO users (name, surname, domicilie, province, date_of_birth, password) VALUES (:name, :surname, :domicilie, :province, :dateOfBirth, :password)';
+			$result = $dbh->prepare($sql);
+
+			$date = $infoUser['date']['year'] . '-' . $infoUser['date']['month'] . '-' . $infoUser['date']['day'];
+			$domicilie = $infoUser['domicilie'] . " " . $infoUser['directionNumber'];
+
+			$result->bindValue(':name', $infoUser['name']);
+			$result->bindValue(':surname', $infoUser['surname']);
+			$result->bindValue(':domicilie', $domicilie);
+			$result->bindValue(':province', $infoUser['province']);
+			$result->bindValue(':dateOfBirth', $date);
+			$result->bindValue(':password', $infoUser['password']);
+	
+			$result->execute();
+	
+			Connection::disconnect($dbh);
+
+			array_push($added, array('logged' => 'yes'));
+			
+		} catch (Exception $e) {
+			
+			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
+			array_push($added, array('logged' => 'no'));
+			
+		}
+		return $added;
+
+	}
+
 }
 
 ?>

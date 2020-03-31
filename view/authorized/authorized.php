@@ -11,10 +11,17 @@
 	<title>Personal Autorizado</title>
 
 	<?php
-		// if ()
+		if (!isset($_COOKIE['remember-me'])) {
+			header('Location: http://localhost/5-library/index.php');
+		}
 	?>
 </head>
 <body>
+	<header>
+		<nav>
+			<a href="http://"></a>
+		</nav>
+	</header>
 	<h1>Autorizado</h1>
 </body>
 </html>
