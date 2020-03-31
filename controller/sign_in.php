@@ -1,6 +1,6 @@
 <?php
 
-header('Content-type:application/json;charset=utf-8');
+header('Content-Type:application/json;charset=utf-8');
 require_once('../model/User.php');
 
 $id = $_POST['id'];
