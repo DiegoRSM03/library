@@ -39,7 +39,7 @@
 	<div id="banner-authorized" class="banner">
 		<div class="content">
 			<div id="section">
-				<p>Lista de <span id="section-name">Usuarios</span></p>
+				<p>Lista de <span id="section-name"></span></p>
 				<table>
 					<thead>
 						<tr id="headers">
@@ -49,9 +49,10 @@
 
 					</tbody>
 				</table>
+				<h1 id="welcome">Por favor, elija alguna de las secciones disponibles en el menu navegable.</h1>
 				<div id="pagination">
 					<button id="page-prev">Anterior</button>
-					<p>Page:1 Of: 5</p>
+					<p id="page-current"></p>
 					<button id="page-next">Siguiente</button>
 				</div>
 			</div>
