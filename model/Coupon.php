@@ -1,9 +1,9 @@
 <?php
 
 require_once('database/Connection.php');
-class Loan {
+class Coupon {
 
-	public static function getLoans ($start, $stop) {
+	public static function getCoupons ($start, $stop) {
 
 		$data = array();
 
@@ -11,7 +11,7 @@ class Loan {
 
 			$dbh = Connection::connect();
 
-			$sql = "SELECT * FROM loans LIMIT $start, $stop";
+			$sql = "SELECT * FROM coupons LIMIT $start, $stop";
 			$result = $dbh->prepare($sql);
 			$result->execute();
 	
