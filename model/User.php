@@ -29,7 +29,7 @@ class User {
 
 	public static function setUser ($infoUser) {
 
-		$added = array();
+		$data = array();
 
 		try {
 
@@ -47,20 +47,18 @@ class User {
 			$result->bindValue(':province', $infoUser['province']);
 			$result->bindValue(':dateOfBirth', $date);
 			$result->bindValue(':password', $infoUser['password']);
-	
 			$result->execute();
 	
+			array_push($data, array('status' => 'succesful'));
 			Connection::disconnect($dbh);
-
-			array_push($added, array('logged' => 'yes'));
 			
 		} catch (Exception $e) {
 			
 			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
-			array_push($added, array('logged' => 'no'));
+			array_push($data, array('status' => 'failure'));
 			
 		}
-		return $added;
+		return $data;
 
 	}
 
@@ -89,6 +87,33 @@ class User {
 			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
 			array_push($data, array('status' => 'failure'));
 			
+		}
+
+	}
+
+	public static function getUsers ($start, $stop) {
+
+		$data = array();
+
+		try {
+
+			$dbh = Connection::connect();
+
+			$sql = "SELECT * FROM users LIMIT $start, $stop";
+			$result = $dbh->prepare($sql);
+			$result->execute();
+
+			while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+				array_push($data, $row);
+			}
+			Connection::disconnect($dbh);
+			return $data;
+
+		} catch (Exception $e) {
+
+			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
+			array_push($data, array('status' => 'failure'));
+
 		}
 
 	}

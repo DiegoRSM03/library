@@ -262,6 +262,91 @@ header {
     #banner-contact .background-opaque .contact-mail .title {
       text-align: right; }
 
+#banner-authorized {
+  background-image: url("../img/authorized_alfons_morales.jpg");
+  height: 110vh; }
+  #banner-authorized .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(2, 26, 37, 0.9);
+    width: 100%;
+    height: 100%; }
+    #banner-authorized .content #section {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: #F2F2F2;
+      border-radius: 5px;
+      width: 80vw;
+      height: 75vh; }
+      #banner-authorized .content #section > p {
+        color: #F2F2F2;
+        background-color: #546807;
+        border-radius: 5px;
+        font-family: 'Roboto';
+        width: 82vw;
+        margin: -1vw 0 0 -1vw;
+        padding: 1rem 3rem; }
+        #banner-authorized .content #section > p span {
+          font-family: 'Roboto Black';
+          text-transform: uppercase; }
+      #banner-authorized .content #section table {
+        width: 100%;
+        border-collapse: collapse;
+        padding: 0 1rem; }
+        #banner-authorized .content #section table thead {
+          color: #021A25;
+          font-family: 'Roboto Bold';
+          font-size: 1.2rem;
+          text-align: left; }
+          #banner-authorized .content #section table thead tr th:first-child {
+            padding-left: 3rem; }
+        #banner-authorized .content #section table tbody tr {
+          height: 8vh; }
+          #banner-authorized .content #section table tbody tr td {
+            color: #6e6e6e;
+            font-family: 'Roboto'; }
+            #banner-authorized .content #section table tbody tr td a {
+              color: #F2F2F2;
+              font-size: 1.3rem;
+              padding: .5rem;
+              margin: 0 1rem;
+              border-radius: 4px;
+              box-shadow: 0 0 0.2rem 1px rgba(0, 0, 0, 0.2);
+              transition: .2s linear 0s;
+              cursor: pointer; }
+            #banner-authorized .content #section table tbody tr td [id^=edit] {
+              background-color: #C3A50C; }
+            #banner-authorized .content #section table tbody tr td [id^=delete] {
+              background-color: #680707; }
+            #banner-authorized .content #section table tbody tr td:first-child {
+              padding-left: 3rem; }
+          #banner-authorized .content #section table tbody tr:nth-child(2n) {
+            background-color: rgba(200, 200, 200, 0.2); }
+  #banner-authorized #pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 1rem 0;
+    visibility: hidden; }
+    #banner-authorized #pagination button {
+      color: #F2F2F2;
+      background-color: #021A25;
+      font-family: 'Roboto Bold';
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: .3s linear 0s;
+      box-shadow: 0 0 1.2rem 0.1rem rgba(0, 0, 0, 0.3);
+      padding: .7rem 3rem;
+      border: none;
+      border-radius: 4px; }
+      #banner-authorized #pagination button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.2); }
+
 .settings {
   display: flex;
   flex-direction: column;
