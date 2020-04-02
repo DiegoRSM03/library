@@ -33,6 +33,6 @@
 			</div>
 		</div>
 	</div>
-	<script src="view/assets/js/app.js"></script>
+	<script src="view/assets/js/index.js"></script>
 </body>
 </html>

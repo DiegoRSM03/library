@@ -17,6 +17,6 @@ $userInfo = array(
 	'password' => $_POST['password']
 );
 
-echo json_encode(User::addUser($userInfo));
+echo json_encode(User::setUser($userInfo));
 
 ?>
