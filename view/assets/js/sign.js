@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+	if (localStorage.getItem('remember') == 'yes') {
+		window.location = 'http://localhost/5-library/view/authorized/authorized.php';
+	}
+
 	//******* PINTANDO LA SECCION ACTUAL DEL USUARIO DEPENDIENDO SI ES SIGNIN O SIGNUP
 	var sign = new URLSearchParams(window.location.search);
 	if (sign.get('sign') == 'in') {
@@ -112,10 +116,11 @@ async function fetchSignIn () {
 		
 		if (data[0].authorized == 'yes') {
 			if (document.getElementById('remember-me').checked) {
-				document.cookie = 'remember-me=yes; expires=600; path=/';
+				localStorage.setItem('remember', 'yes');
 			} else {
-				document.cookie = 'remember-me=no; expires=600; path=/';
+				localStorage.setItem('remember', 'no');
 			}
+			document.cookie = 'id=' + id + '; path=/';
 			window.location = 'http://localhost/5-library/view/authorized/authorized.php';
 		} else {
 			document.getElementById('failure').innerHTML = '<p>El id y contraseña ingresados no coincide</p><p>Intenta registrarte primero</p>'

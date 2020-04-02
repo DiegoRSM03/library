@@ -19,6 +19,7 @@ class User {
 
 		if ($result->rowCount() >= 1) {
 			array_push($authorized, array('authorized' => 'yes'));
+			
 		} else {
 			array_push($authorized, array('authorized' => 'no'));
 		}
@@ -26,7 +27,7 @@ class User {
 
 	}
 
-	public static function addUser ($infoUser) {
+	public static function setUser ($infoUser) {
 
 		$added = array();
 
@@ -60,6 +61,35 @@ class User {
 			
 		}
 		return $added;
+
+	}
+
+	public static function getUserInfo ($id) {
+		
+		$data = array();
+
+		try {
+
+			$dbh = Connection::connect();
+
+			$sql = 'SELECT * FROM users WHERE id = :id';
+			$result = $dbh->prepare($sql);
+
+			$result->bindValue(':id', $id);
+			$result->execute();
+
+			while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+				array_push($data, $row);
+			}
+			Connection::disconnect($dbh);
+			return $data;
+
+		} catch (Exception $e) {
+
+			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
+			array_push($data, array('status' => 'failure'));
+			
+		}
 
 	}
 

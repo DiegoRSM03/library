@@ -50,7 +50,7 @@ header {
     text-decoration: none;
     cursor: pointer;
     border: none;
-    margin-left: 1rem; }
+    margin-left: 2rem; }
     header nav a:hover {
       color: #c7c7c7; }
   header nav .nav-button-selected {
@@ -261,6 +261,26 @@ header {
             color: #D7F205; }
     #banner-contact .background-opaque .contact-mail .title {
       text-align: right; }
+
+.settings {
+  color: #F2F2F2;
+  background-color: #021A25;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  transform: translateX(100%);
+  transition: 1.5s ease-in-out 0s;
+  width: 35vw;
+  height: 100vh;
+  padding: 8rem 5rem; }
+  .settings h1, .settings h2, .settings h3 {
+    font-weight: normal; }
+  .settings h1 {
+    font-family: 'Roboto Black'; }
+  .settings h2 {
+    font-family: 'Roboto';
+    display: inline-block; }
 
 #about-section {
   background-image: linear-gradient(to bottom, #021A25 40%, black); }
