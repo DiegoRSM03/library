@@ -23,10 +23,18 @@
 		</nav>
 	</header>
 	<div class="settings">
-		<p id="settings-id">ID</p>
-		<p id="settings-name">Name</p><p id="settings-surname">Surname</p>
-		<p id="settings-adress">Domicilio: </p><p id="settings-province">Provincia: </p>
-		<p id="settings-date-of-birth">Nacimiento: </p><p id="settings-password">Contraseña: </p>
+		<div class="info">
+			<p id="settings-id"></p>
+			<p id="settings-name-surname"></p>
+			<p id="settings-domicilie"></p>
+			<p id="settings-province"></p>
+			<p id="settings-date-of-birth"></p>
+			<p id="settings-password"></p>
+		</div>
+		<div class="buttons">
+			<button id="button-edit"><span class="flaticon-pen"></span> Editar Perfil</button>
+			<button id="button-log-out"><span class="flaticon-log-out"></span> Cerrar Sesión</button>
+		</div>
 	</div>
 	<div id="banner-authorized" class="banner">
 		
