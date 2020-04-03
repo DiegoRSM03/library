@@ -380,22 +380,43 @@ header {
   padding: 5rem; }
   .settings .info, .settings .buttons {
     width: 100%; }
-  .settings .info {
-    color: #F2F2F2; }
-    .settings .info #settings-id,
-    .settings .info #settings-name-surname {
-      color: #F2F2F2;
-      font-family: 'Roboto Black';
-      font-size: 2.2rem; }
-    .settings .info #settings-name-surname {
-      margin-bottom: 1.5rem; }
-    .settings .info p {
-      color: #A1A1A1;
-      font-family: 'Roboto';
-      font-size: 1.2rem;
-      margin: .5rem 0; }
-      .settings .info p span {
-        margin-right: .5rem; }
+  .settings .info #settings-id,
+  .settings .info #settings-name,
+  .settings .info #settings-surname {
+    color: #F2F2F2;
+    font-family: 'Roboto Black';
+    font-size: 2.2rem;
+    width: 100%;
+    margin-bottom: 1rem; }
+  .settings .info input {
+    color: #A1A1A1;
+    background-color: rgba(200, 200, 200, 0.1);
+    border: none;
+    border-radius: 3px;
+    padding: .5rem 1rem;
+    margin-right: .5rem; }
+  .settings .info [id^=settings-date] {
+    width: 5vw; }
+  .settings .info > div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: #A1A1A1;
+    font-family: 'Roboto';
+    font-size: 1.2rem;
+    width: 100%;
+    margin: .5rem 0; }
+    .settings .info > div span {
+      margin-right: .5rem; }
+  .settings .buttons #save-cancel {
+    display: flex;
+    justify-content: space-between; }
+    .settings .buttons #save-cancel button {
+      width: 47%; }
+    .settings .buttons #save-cancel #button-save {
+      background-color: #546807; }
+    .settings .buttons #save-cancel #button-cancel {
+      background-color: #680707; }
   .settings .buttons button {
     color: #F2F2F2;
     background-color: rgba(250, 250, 250, 0.2);

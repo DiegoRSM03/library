@@ -49,7 +49,7 @@ class User {
 			$result->bindValue(':password', $infoUser['password']);
 			$result->execute();
 	
-			array_push($data, array('status' => 'succesful'));
+			array_push($data, array('status' => 'successful'));
 			Connection::disconnect($dbh);
 			
 		} catch (Exception $e) {
@@ -115,6 +115,42 @@ class User {
 			array_push($data, array('status' => 'failure'));
 
 		}
+
+	}
+
+	public static function updateUser ($id, $newValues) {
+
+		$data = array();
+
+		try {
+
+			$dbh = Connection::connect();
+	
+			$sql = 'UPDATE users SET name=:name, surname=:surname, domicilie=:domicilie, province=:province, date_of_birth=:dateOfBirth, password=:password WHERE id=:id';
+			$result = $dbh->prepare($sql);
+
+			$date = $newValues['date']['year'] . '-' . $newValues['date']['month'] . '-' . $newValues['date']['day'];
+			$domicilie = $newValues['domicilie'] . " " . $newValues['directionNumber'];
+
+			$result->bindValue(':name', $newValues['name']);
+			$result->bindValue(':surname', $newValues['surname']);
+			$result->bindValue(':domicilie', $domicilie);
+			$result->bindValue(':province', $newValues['province']);
+			$result->bindValue(':dateOfBirth', $date);
+			$result->bindValue(':password', $newValues['password']);
+			$result->bindValue(':id', $id);
+			$result->execute();
+	
+			array_push($data, array('status' => 'successful'));
+			Connection::disconnect($dbh);
+			
+		} catch (Exception $e) {
+			
+			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
+			array_push($data, array('status' => 'failure'));
+			
+		}
+		return $data;
 
 	}
 

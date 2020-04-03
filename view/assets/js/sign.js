@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		window.location = 'http://localhost/5-library/view/authorized/authorized.php';
 	}
 
-	//******* PINTANDO LA SECCION ACTUAL DEL USUARIO DEPENDIENDO SI ES SIGNIN O SIGNUP
+	//PINTANDO LA SECCION ACTUAL DEL USUARIO DEPENDIENDO SI ES SIGNIN O SIGNUP
 	var sign = new URLSearchParams(window.location.search);
 	if (sign.get('sign') == 'in') {
 		document.getElementById('sign-in').style.color = '#FAFAFA';
@@ -16,14 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
 		document.getElementsByClassName('suggestions')[0].style.paddingTop = '3rem';
 	}
 	
-	//******* CAMBIA FONDO DE PANTALLA Y DESPUES CADA 8S
-	fetchBackground();
-	setInterval(() => fetchBackground(), 8000);
+	//CAMBIA FONDO DE PANTALLA Y DESPUES CADA 8S
+	//fetchBackground();
+	//setInterval(() => fetchBackground(), 8000);
 
-	//******* OBTIENE LOS PRIMEROS 5 LIBROS DE LA BASE DE DATOS
+	//OBTIENE LOS PRIMEROS 5 LIBROS DE LA BASE DE DATOS
 	fetchSuggestions();
 
-	//******* PONER A LA ESCUCHA LOS BOTONES DE ENVÍO DE FORMULARIO
+	//PONER A LA ESCUCHA LOS BOTONES DE ENVÍO DE FORMULARIO
 	if (sign.get('sign') == 'in') {
 		document.getElementById('to-form-sign-in').addEventListener('click', e => {
 			e.preventDefault();
@@ -155,7 +155,7 @@ async function fetchSignUp () {
 		// VERIFICANDO SI HAY LETRAS EN LOS CAMPOS: NOMBRE, APELLIDO, CALLE DOM Y PROVINCIA
 		formStrings.forEach(e => {
 			for (let i=0 ; i<e.length ; i++) {
-				if (!isNaN(e.charAt(i)) || e.charAt(i) == " ") {
+				if (!isNaN(e.charAt(i)) && e.charAt(i) != " ") {
 					numbersInString = e;
 				} 
 			}
@@ -202,7 +202,7 @@ async function fetchSignUp () {
 	} else {
 		// VERIFICANDO SI HAY LETRAS EN EL CAMPO CORRESPONDIENTE A LA ALTURA DE LA CALLE DE DOMICILIO
 		for (let i=0 ; i<directionNumber.length ; i++) {
-			if (isNaN(e.charAt(i))) { 
+			if (isNaN(directionNumber.charAt(i))) { 
 				lettersInDomicilieNumber = true;
 			}
 		}
@@ -225,7 +225,7 @@ async function fetchSignUp () {
 		});
 		var data = await response.json();
 
-		if (data[0].logged == 'yes') {
+		if (data[0].status == 'successful') {
 			window.location = 'http://localhost/5-library/view/sign/sign.php?sign=in';
 		} else {
 			document.getElementById('failure').innerHTML = '<p>Ocurrio un error al crear el usuario</p><p>Intentalo de nuevo</p>'

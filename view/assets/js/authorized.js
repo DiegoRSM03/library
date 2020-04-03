@@ -1,5 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+	document.cookie = 'current_section=users; path=/';
+
+	//DESHABILITANDO INPUT PARA EDITAR USUARIO Y OCULTANDO BOTONES GUARDAR Y CANCELAR
+	for (let i=0 ; i<9 ; i++) {
+		document.getElementsByClassName('settings-input')[i].disabled = true;
+	}
+	document.getElementById('save-cancel').style.display = 'none';
+
 	//SI EL USUARIO INTENTA ACCEDER SIN PASAR POR EL LOGIN
 	if (localStorage.getItem('remember') == null) {
 		window.location = 'http://localhost/5-library/index.php';
@@ -11,6 +19,33 @@ document.addEventListener('DOMContentLoaded', () => {
 	sessionStorage.setItem('settingsOn', 'no');
 	document.getElementById('settings').addEventListener('click', () => {
 		fetchUserInfo();
+	});
+
+	//BOTON DE EDITAR USUARIO ACTUAL
+	document.getElementById('button-edit').addEventListener('click', () => {
+		document.getElementById('button-edit').style.display = 'none';
+		document.getElementById('save-cancel').style.display = 'flex';
+		for (let i=0 ; i<9 ; i++) {
+			document.getElementsByClassName('settings-input')[i].disabled = false;
+			document.getElementsByClassName('settings-input')[i].style.backgroundColor = 'rgba(0, 0, 0, .4)';
+		}
+	});
+
+	//BOTON DE CANCELAR LA EDICION DEL USUARIO
+	document.getElementById('button-cancel').addEventListener('click', () => {
+		document.getElementById('save-cancel').style.display = 'none';
+		document.getElementById('button-edit').style.display = 'inline-block';
+		for (let i=0 ; i<9 ; i++) {
+			document.getElementsByClassName('settings-input')[i].disabled = true;
+			document.getElementsByClassName('settings-input')[i].style.backgroundColor = 'rgba(200, 200, 200, .1)';
+		}
+		sessionStorage.setItem('settingsOn', 'no');
+		fetchUserInfo();
+	});
+
+	//BOTON DE GUARDAR LA EDICION DEL USUARIO
+	document.getElementById('button-save').addEventListener('click', () => {
+		fetchEditUser();
 	});
 
 	//BOTON DE CERRAR SESIÓN EN AJUSTES
@@ -63,16 +98,157 @@ async function fetchUserInfo () {
 	
 		var response = await fetch('http://localhost/5-library/controller/user_info.php');
 		var data = await response.json();
-		console.log(data);
 
-		document.getElementById('settings-id').innerHTML = '<span class="flaticon-search"></span> ' + data[0].id;
-		document.getElementById('settings-name-surname').innerHTML = data[0].name + ' ' + data[0].surname;
-		document.getElementById('settings-domicilie').innerHTML = '<span class="flaticon-home"></span> ' + data[0].domicilie;
-		document.getElementById('settings-province').innerHTML = '<span class="flaticon-placeholder"></span> ' + data[0].province;
-		document.getElementById('settings-date-of-birth').innerHTML = '<span class="flaticon-user"></span> ' + data[0].date_of_birth;
-		document.getElementById('settings-password').innerHTML = '<span class="flaticon-door-key"></span> ' + data[0].password;
+		document.getElementById('settings-id').innerHTML = data[0].id;
+		document.getElementById('settings-name').value = data[0].name;
+		document.getElementById('settings-surname').value = data[0].surname;
+
+		let domicilieString = '';
+		let domicilieNumber = '';
+		for (let i=0 ; i<data[0].domicilie.length ; i++) {
+		if (isNaN(data[0].domicilie.charAt(i)) || data[0].domicilie.charAt(i) == ' ') {
+			domicilieString += data[0].domicilie.charAt(i);
+		} else {
+			domicilieNumber += data[0].domicilie.charAt(i);
+		}
+	}
+
+		document.getElementById('settings-domicilie-string').value = domicilieString;
+		document.getElementById('settings-domicilie-number').value = domicilieNumber;
+
+		
+		document.getElementById('settings-date-day').value = data[0].date_of_birth.substring(8,10);
+		document.getElementById('settings-date-month').value = data[0].date_of_birth.substring(5,7);
+		document.getElementById('settings-date-year').value = data[0].date_of_birth.substring(0,4);
+		
+		
+		document.getElementById('settings-province').value = data[0].province;
+		document.getElementById('settings-password').value = data[0].password;
 
 	}
+
+}
+
+async function fetchEditUser () {
+
+	var follow = false;
+	var numbersInString = '';
+	var lettersInDate = false;
+	var lettersInDomicilieNumber = false;
+	
+
+
+	var name = document.getElementById('settings-name').value;
+	var surname = document.getElementById('settings-surname').value;
+	var province = document.getElementById('settings-province').value;
+	var domicilie = document.getElementById('settings-domicilie-string').value;
+	var formStrings = [name, surname, province, domicilie];
+
+	if (name.length < 3 || surname.length < 4 || domicilie.length < 4 || province.length < 4) {
+		document.getElementById('pending').innerHTML = '<p>Recuerda que: Los caracteres minimos son 3(Nombre), 5(Apellido), 5(Provincia).</p>';
+		sendSignStatus('pending', 3000);
+	} else {
+		// VERIFICANDO SI HAY LETRAS EN LOS CAMPOS: NOMBRE, APELLIDO, CALLE DOM Y PROVINCIA
+		formStrings.forEach(e => {
+			for (let i=0 ; i<e.length ; i++) {
+				if (!isNaN(e.charAt(i)) && e.charAt(i) != ' ') {
+					console.log(numbersInString.charAt(i));
+					numbersInString = e;
+				}
+			}
+		});
+		if (numbersInString != '') {
+			document.getElementById('pending').innerHTML = '<p>Recuerda que: En los campos Nombre, Apellido, Calle de domicilio y Ciudad, no deben ir numeros.</p>';
+			sendSignStatus('pending', 3000);
+		}
+	}
+
+
+
+	var dateDay = document.getElementById('settings-date-day').value;
+	var dateMonth = document.getElementById('settings-date-month').value;
+	var dateYear = document.getElementById('settings-date-year').value;
+	var formDates = [dateDay, dateMonth, dateYear];
+
+	const currentDate = new Date();
+	const age = currentDate.getFullYear();
+	if (dateYear > age || dateYear < 1900 || (dateMonth > 12 && dateMonth > 0) || (dateDay > 31 && dateDay > 0)) {
+		document.getElementById('pending').innerHTML = '<p>Recuerda que: Los campos correspondientes a la fecha, tienen que ser realistas.</p>';
+		sendSignStatus('pending', 3000);
+	} else {
+		// VERIFICANDO SI HAY LETRAS EN LOS CAMPOS CORRESPONDIENTES A FECHA
+		formDates.forEach(e => {
+			for (let i=0 ; i<e.length ; i++) {
+				if (isNaN(e.charAt(i))) {
+					lettersInDate = true;
+				} 
+			}
+		});
+		if (lettersInDate) {
+			document.getElementById('pending').innerHTML = '<p>Recuerda que: En los campos de fecha no se deben colocar letras, y el campo año debe tener 4 caracteres</p>';
+			sendSignStatus('pending', 3000);
+		}
+	}
+
+
+
+	var directionNumber = document.getElementById('settings-domicilie-number').value;
+	if (directionNumber < 1) {
+		document.getElementById('pending').innerHTML = '<p>Recuerda que: La altura de la calle no puede ser 0</p>';
+		sendSignStatus('pending', 3000);
+	} else {
+		// VERIFICANDO SI HAY LETRAS EN EL CAMPO CORRESPONDIENTE A LA ALTURA DE LA CALLE DE DOMICILIO
+		for (let i=0 ; i<directionNumber.length ; i++) {
+			if (isNaN(directionNumber.charAt(i))) {
+				lettersInDomicilieNumber = true;
+			}
+		}
+		if (lettersInDomicilieNumber) {
+			document.getElementById('pending').innerHTML = '<p>Recuerda que: No pueden haber letras en el campo de numero de domicilio</p>';
+			sendSignStatus('pending', 3000);
+		}
+	}
+
+	// VERIFICANDO SI SE CUMPLEN LOS REQUISITOS PARA QUE PUEDA REGISTRARSE EL USUARIO
+	(numbersInString != '' || lettersInDate || lettersInDomicilieNumber || dateYear.length != 4) ? follow = false : follow = true;
+	if (follow) {
+
+		var form = new FormData(document.getElementById('form-settings'));
+		var response = await fetch('http://localhost/5-library/controller/api/update.php', {
+			method: 'POST',
+			body: form
+		});
+		var data = await response.json();
+		console.log(data);
+
+		if (data[0].status == 'successful') {
+			document.getElementById('successful').innerHTML = '<p>Usuario editado con éxito</p>';
+			sendSignStatus('successful', 2000);
+		} else {
+			document.getElementById('failure').innerHTML = '<p>Ocurrio un error al crear el usuario</p><p>Intentalo de nuevo</p>'
+			sendSignStatus('failure', 2000);
+		}
+
+		//CONVIRTIENDO LOS INPUT A DESACTIVADOS YA QUE FINALIZÓ LA OPERACION
+		document.getElementById('save-cancel').style.display = 'none';
+		document.getElementById('button-edit').style.display = 'inline-block';
+		for (let i=0 ; i<9 ; i++) {
+			document.getElementsByClassName('settings-input')[i].disabled = true;
+			document.getElementsByClassName('settings-input')[i].style.backgroundColor = 'rgba(200, 200, 200, .1)';
+		}
+		sessionStorage.setItem('settingsOn', 'no');
+		fetchUserInfo();
+
+	}
+	
+}
+
+function sendSignStatus (element, time) {
+
+	document.getElementById(element).style.transform = 'translateY(0)';
+	setTimeout(() => {
+		document.getElementById(element).style.transform = 'translateY(-100%)';
+	}, time);
 
 }
 

@@ -417,27 +417,55 @@
 		width: 100%
 
 	.info
-		color: $WHITE
-
 		#settings-id,
-		#settings-name-surname
+		#settings-name,
+		#settings-surname
 			color: $WHITE
 			font-family: 'Roboto Black'
 			font-size: 2.2rem
+			width: 100%
+			margin-bottom: 1rem
 
-		#settings-name-surname
-			margin-bottom: 1.5rem
+		input
+			color: $GRAY
+			background-color: rgba(200, 200, 200, .1)
+			border: none
+			border-radius: 3px
+			padding: .5rem 1rem
+			margin-right: .5rem
 
-		p
+		[id^=settings-date]
+			width: 5vw
+
+		>div
+			display: flex
+			align-items: center
+			justify-content: flex-start
+
 			color: $GRAY
 			font-family: 'Roboto'
 			font-size: 1.2rem
+
+			width: 100%
 			margin: .5rem 0
 
 			span
 				margin-right: .5rem
 	
 	.buttons
+		#save-cancel
+			display: flex
+			justify-content: space-between
+
+			button
+				width: 47%
+
+			#button-save
+				background-color: $GREEN_DARK
+
+			#button-cancel
+				background-color: $RED
+
 		button
 			color: $WHITE
 			background-color: rgba(250, 250, 250, .2)

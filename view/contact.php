@@ -13,7 +13,7 @@
 <body>
 	<?php 
 		require('components/header.php');
-		require('components/sendMail.php');
+		require('components/status.php');
 	?>
 	<div id="banner-contact" class="banner">
 		<div class="background-opaque">

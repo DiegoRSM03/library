@@ -11,6 +11,8 @@
 	<title>Personal Autorizado</title>
 </head>
 <body>
+	<?php require('../components/status.php') ?>
+	
 	<header>
 		<h1>Biblioteca DRSM</h1>
 		<nav>
@@ -23,15 +25,38 @@
 		</nav>
 	</header>
 	<div class="settings">
-		<div class="info">
-			<p id="settings-id"></p>
-			<p id="settings-name-surname"></p>
-			<p id="settings-domicilie"></p>
-			<p id="settings-province"></p>
-			<p id="settings-date-of-birth"></p>
-			<p id="settings-password"></p>
-		</div>
+		<form class="info" id="form-settings" method="POST">
+			<div>
+				<span class="flaticon-search"></span>
+				<p id="settings-id"></p>
+			</div>
+			<input type="text" name="settings-name" class="settings-input" id="settings-name">
+			<input type="text" name="settings-surname" class="settings-input" id="settings-surname">
+			<div>
+				<span class="flaticon-home"></span>
+				<input type="text" name="settings-domicilie-string" class="settings-input" id="settings-domicilie-string">
+				<input type="text" name="settings-domicilie-number" class="settings-input" id="settings-domicilie-number">
+			</div>
+			<div>
+				<span class="flaticon-placeholder"></span>
+				<input type="text" name="settings-province" class="settings-input" id="settings-province">
+			</div>
+			<div>
+				<span class="flaticon-user"></span>
+				<input type="text" name="settings-date-day" class="settings-input" id="settings-date-day">
+				<input type="text" name="settings-date-month" class="settings-input" id="settings-date-month">
+				<input type="text" name="settings-date-year" class="settings-input" id="settings-date-year">
+			</div>
+			<div>
+				<span class="flaticon-door-key"></span>
+				<input type="text" name="settings-password" class="settings-input" id="settings-password">
+			</div>
+		</form>
 		<div class="buttons">
+			<div id="save-cancel">
+				<button id="button-save"><span class="flaticon-plus"></span> Guardar</button>
+				<button id="button-cancel"><span class="flaticon-eraser"></span> Cancelar</button>
+			</div>
 			<button id="button-edit"><span class="flaticon-pen"></span> Editar Perfil</button>
 			<button id="button-log-out"><span class="flaticon-log-out"></span> Cerrar Sesión</button>
 		</div>
