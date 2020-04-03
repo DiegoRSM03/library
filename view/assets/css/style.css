@@ -279,22 +279,24 @@ header {
       position: relative;
       background-color: #F2F2F2;
       border-radius: 5px;
-      width: 80vw;
+      width: 85vw;
       height: 75vh; }
       #banner-authorized .content #section > p {
         color: #F2F2F2;
         background-color: #546807;
         border-radius: 5px;
         font-family: 'Roboto';
-        width: 82vw;
+        width: 87vw;
         margin: -1vw 0 0 -1vw;
         padding: 1rem 3rem; }
         #banner-authorized .content #section > p span {
           font-family: 'Roboto Black';
           text-transform: uppercase; }
       #banner-authorized .content #section table {
+        table-layout: auto;
         width: 100%;
         border-collapse: collapse;
+        border-spacing: 0px;
         padding: 0 1rem; }
         #banner-authorized .content #section table thead {
           color: #021A25;
@@ -304,23 +306,69 @@ header {
           #banner-authorized .content #section table thead tr th:first-child {
             padding-left: 3rem; }
         #banner-authorized .content #section table tbody tr {
+          width: 100%;
           height: 8vh; }
           #banner-authorized .content #section table tbody tr td {
             color: #6e6e6e;
             font-family: 'Roboto'; }
+            #banner-authorized .content #section table tbody tr td input {
+              color: #6e6e6e;
+              background-color: rgba(0, 0, 0, 0);
+              font-family: 'Roboto';
+              font-size: 1vw;
+              border: none;
+              width: 100%; }
+            #banner-authorized .content #section table tbody tr td .table-name-authors,
+            #banner-authorized .content #section table tbody tr td .table-name-users,
+            #banner-authorized .content #section table tbody tr td .table-surname,
+            #banner-authorized .content #section table tbody tr td .table-domicilie,
+            #banner-authorized .content #section table tbody tr td .table-password {
+              width: 10vw; }
+            #banner-authorized .content #section table tbody tr td .table-province,
+            #banner-authorized .content #section table tbody tr td .table-date-of-birth {
+              width: 6vw; }
+            #banner-authorized .content #section table tbody tr td .table-gender,
+            #banner-authorized .content #section table tbody tr td .table-editorial {
+              width: 8rem; }
+            #banner-authorized .content #section table tbody tr td .table-pages,
+            #banner-authorized .content #section table tbody tr td .table-year,
+            #banner-authorized .content #section table tbody tr td .table-price,
+            #banner-authorized .content #section table tbody tr td .table-author {
+              width: 5rem; }
             #banner-authorized .content #section table tbody tr td a {
               color: #F2F2F2;
               font-size: 1.3rem;
+              position: relative;
               padding: .5rem;
               margin: 0 1rem;
               border-radius: 4px;
               box-shadow: 0 0 0.2rem 1px rgba(0, 0, 0, 0.2);
               transition: .2s linear 0s;
               cursor: pointer; }
+              #banner-authorized .content #section table tbody tr td a::after {
+                content: attr(tooltip);
+                position: absolute;
+                z-index: 2;
+                bottom: -2rem;
+                left: 50%;
+                transform: translateX(-50%);
+                visibility: hidden;
+                color: #F2F2F2;
+                background-color: #021A25;
+                font-family: 'Roboto Light';
+                font-size: .8rem;
+                text-align: center;
+                padding: .3rem 1.5rem; }
+              #banner-authorized .content #section table tbody tr td a:hover::after {
+                visibility: visible; }
             #banner-authorized .content #section table tbody tr td [id^=edit] {
               background-color: #C3A50C; }
             #banner-authorized .content #section table tbody tr td [id^=delete] {
               background-color: #680707; }
+            #banner-authorized .content #section table tbody tr td [id^=save] {
+              background-color: #546807; }
+            #banner-authorized .content #section table tbody tr td [id^=cancel] {
+              background-color: #C3A50C; }
             #banner-authorized .content #section table tbody tr td:first-child {
               padding-left: 3rem; }
           #banner-authorized .content #section table tbody tr:nth-child(2n) {

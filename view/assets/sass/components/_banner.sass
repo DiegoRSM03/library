@@ -286,7 +286,7 @@
 			background-color: $WHITE
 			border-radius: 5px
 
-			width: 80vw
+			width: 85vw
 			height: 75vh
 
 			>p
@@ -296,7 +296,7 @@
 
 				font-family: 'Roboto'
 
-				width: 82vw
+				width: 87vw
 				margin: -1vw 0 0 -1vw
 				padding: 1rem 3rem
 
@@ -305,9 +305,12 @@
 					text-transform: uppercase
 				
 			table
+				table-layout: auto
 				width: 100%
 				border-collapse: collapse
+				border-spacing: 0px
 				padding: 0 1rem
+
 
 				thead
 					color: $BLACK
@@ -321,26 +324,84 @@
 
 				tbody
 					tr 
+						width: 100%
 						height: 8vh
 						td
 							color: darken($GRAY, 20)
 							font-family: 'Roboto'
 
+							input
+								color: darken($GRAY, 20)
+								background-color: rgba(0, 0, 0, 0)
+								font-family: 'Roboto'
+								font-size: 1vw
+								border: none
+								width: 100%
+
+							.table-name-authors,
+							.table-name-users,
+							.table-surname,
+							.table-domicilie,
+							.table-password
+								width: 10vw
+
+							.table-province,
+							.table-date-of-birth
+								width: 6vw
+
+							.table-gender,
+							.table-editorial
+								width: 8rem
+								
+							.table-pages,
+							.table-year,
+							.table-price,
+							.table-author
+								width: 5rem
+
 							a
 								color: $WHITE
 								font-size: 1.3rem
+
+								position: relative
 								padding: .5rem
 								margin: 0 1rem
 								border-radius: 4px
+
 								box-shadow: 0 0 .2rem 1px rgba(0, 0, 0, .2)
 								transition: .2s linear 0s
 								cursor: pointer
+
+								&::after
+									content: attr(tooltip)
+									position: absolute
+									z-index: 2
+									bottom: -2rem
+									left: 50%
+									transform: translateX(-50%)
+									visibility: hidden
+
+									color: $WHITE
+									background-color: $BLACK
+									font-family: 'Roboto Light'
+									font-size: .8rem
+									text-align: center
+									padding: .3rem 1.5rem
+
+								&:hover::after
+									visibility: visible
 
 							[id^=edit]
 								background-color: $YELLOW
 
 							[id^=delete]
 								background-color: $RED
+
+							[id^=save]
+								background-color: $GREEN_DARK
+
+							[id^=cancel]
+								background-color: $YELLOW
 
 							&:first-child
 								padding-left: 3rem

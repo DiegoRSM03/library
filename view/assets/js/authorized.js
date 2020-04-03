@@ -60,8 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	var sections = [
 		{'section': 'users', 'object': document.getElementById('nav-users'), 'headers': ['ID', 'Nombre', 'Apellido', 'Domicilio', 'Provincia', 'Nacimiento', 'Contraseña']},
 		{'section': 'loans', 'object': document.getElementById('nav-loans'), 'headers': ['ID', 'ID del Libro', 'ID del Usuario', 'Inicio del Préstamo', 'Fin del Préstamo']},
-		{'section': 'books', 'object': document.getElementById('nav-books'), 'headers': ['ID', 'Titulo', 'Editorial', 'Género', 'Paginas', 'Año', 'Precio', 'Nombre del Autor', 'Pais del Autor']},
-		{'section': 'coupons', 'object': document.getElementById('nav-coupons'), 'headers': ['ID', 'Precio de Descuento']}
+		{'section': 'books', 'object': document.getElementById('nav-books'), 'headers': ['ID', 'Titulo', 'Editorial', 'Género', 'Paginas', 'Año', 'Precio', 'ID del Autor']},
+		{'section': 'coupons', 'object': document.getElementById('nav-coupons'), 'headers': ['ID', 'Precio de Descuento']},
+		{'section': 'authors', 'object': document.getElementById('nav-authors'), 'headers': ['ID', 'Nombre', 'Apellido', 'Premios', 'País']}
 	]
 	sections.forEach(e => {
 		e.object.addEventListener('click', () => {
@@ -76,7 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	//BOTONES ANTERIOR Y SIGUIENTE
 	document.getElementById('page-prev').addEventListener('click', () => {
-		fetchSection(getCookie('current_section'), true, false);
+		if (getCookie('page_start') == 0) {
+			document.getElementById('pending').innerHTML = '<p>Esta es la primer página</p><p>No hay registros anteriores a estos por ver</p>'
+			sendSignStatus('pending', 2500);
+		} else {
+			fetchSection(getCookie('current_section'), true, false);
+		}
 	});
 	document.getElementById('page-next').addEventListener('click', () => {
 		fetchSection(getCookie('current_section'), false, true);
@@ -260,7 +266,6 @@ function setTableHeaders (headers) {
 		document.getElementById('headers').appendChild(th);
 	});
 	document.getElementById('headers').appendChild(document.createElement('th'));
-	document.getElementById('headers').appendChild(document.createElement('th'));
 }
 
 async function fetchSection (section, prev, next) {
@@ -279,152 +284,135 @@ async function fetchSection (section, prev, next) {
 	var tableBody = document.getElementById('tbody');
 	tableBody.innerHTML = '';
 
-	switch (section) {
-		case 'users':
-			document.getElementById('section-name').innerHTML = 'Usuarios';
-			data.forEach(e => {
-				var tr = document.createElement('tr');
-				tableBody.appendChild(tr);
+	data.forEach(e => {
+		var tr = document.createElement('tr');
+		tableBody.appendChild(tr);
+
+		var tdId = document.createElement('td');
+		tdId.innerHTML = e.id;
+		tr.appendChild(tdId);
+
+		if (section == 'users' || section == 'books' || section == 'authors') {
+			var tdName = document.createElement('td');
+			tdName.innerHTML = `<input id="table-name-${e.id}" type="text" value="${e.name}">`;
+			tr.appendChild(tdName);
+		}
+
+		if (section == 'users' || section == 'authors') {
+
+			var tdSurname = document.createElement('td');
+			tdSurname.innerHTML = `<input id="table-surname-${e.id}" class="table-surname" type="text" value="${e.surname}">`;
+			tr.appendChild(tdSurname);
+
+		}
+
+		if (section == 'users') {
+
+			document.getElementById('section-name').innerHTML = 'USUARIOS';
+			document.getElementById(`table-name-${e.id}`).classList.add('table-name-users');
+	
+			var tdDomicilie = document.createElement('td');
+			tdDomicilie.innerHTML = `<input id="table-domicilie-${e.id}" class="table-domicilie" type="text" value="${e.domicilie}">`;
+			tr.appendChild(tdDomicilie);
+	
+			var tdProvince = document.createElement('td');
+			tdProvince.innerHTML = `<input id="table-province-${e.id}" class="table-province" type="text" value="${e.province}">`;
+			tr.appendChild(tdProvince);
+	
+			var tdDateOfBirth = document.createElement('td');
+			tdDateOfBirth.innerHTML = `<input id="table-date-of-birth-${e.id}" class="table-date-of-birth" type="text" value="${e.date_of_birth}">`;
+			tr.appendChild(tdDateOfBirth);
+	
+			var tdPassword = document.createElement('td');
+			tdPassword.innerHTML = `<input id="table-password-${e.id}" class="table-password" type="text" value="${e.password}">`;
+			tr.appendChild(tdPassword);
+
+		} else if (section == 'loans') {
+
+			document.getElementById('section-name').innerHTML = 'PRÉSTAMOS';
+
+			var tdIdBook = document.createElement('td');
+			tdIdBook.innerHTML = `<input id="table-book-${e.id}" class="table-book" type="text" value="${e.book_id}">`;
+			tr.appendChild(tdIdBook);
+
+			var tdIdUser = document.createElement('td');
+			tdIdUser.innerHTML = `<input id="table-user-${e.id}" class="table-user" type="text" value="${e.user_id}">`;
+			tr.appendChild(tdIdUser);
+
+			var tdDateIn = document.createElement('td');
+			tdDateIn.innerHTML = `<input id="table-loan-in-${e.id}" class="table-loan-in" type="text" value="${e.loan_date_in}">`;
+			tr.appendChild(tdDateIn);
+
+			var tdDateOut = document.createElement('td');
+			tdDateOut.innerHTML = `<input id="table-loan-out-${e.id}" class="table-loan-out" type="text" value="${e.loan_date_out}">`;
+			tr.appendChild(tdDateOut);
+
+		} else if (section == 'books') {
+
+			document.getElementById('section-name').innerHTML = 'LIBROS';
+			document.getElementById(`table-name-${e.id}`).classList.add('table-name-books');
+
+			var tdEditorial = document.createElement('td');
+			tdEditorial.innerHTML = `<input id="table-editorial-${e.id}" class="table-editorial" type="text" value="${e.editorial}">`;
+			tr.appendChild(tdEditorial);
+
+			var tdGender = document.createElement('td');
+			tdGender.innerHTML = `<input id="table-gender-${e.id}" class="table-gender" type="text" value="${e.gender}">`;
+			tr.appendChild(tdGender);
+
+			var tdPages = document.createElement('td');
+			tdPages.innerHTML = `<input id="table-pages-${e.id}" class="table-pages" type="text" value="${e.pages}">`;
+			tr.appendChild(tdPages);
+
+			var tdYear = document.createElement('td');
+			tdYear.innerHTML = `<input id="table-year-${e.id}" class="table-year" type="text" value="${e.year}">`;
+			tr.appendChild(tdYear);
+
+			var tdPrice = document.createElement('td');
+			tdPrice.innerHTML = `<input id="table-price-${e.id}" class="table-price" type="text" value="${e.price}">`;
+			tr.appendChild(tdPrice);
+
+			var tdAuthorCountry = document.createElement('td');
+			tdAuthorCountry.innerHTML = `<input id="table-author-${e.id}" class="table-author" type="text" value="${e.author_id}">`;
+			tr.appendChild(tdAuthorCountry);
+
+		} else if (section == 'coupons') {
+
+			document.getElementById('section-name').innerHTML = 'CUPONES';
+
+			var tdMount = document.createElement('td');
+			tdMount.innerHTML = `<input id="table-mount-${e.id}" class="table-mount" type="text" value="${e.mount}">`;
+			tr.appendChild(tdMount);
+
+		} else {
+
+			document.getElementById('section-name').innerHTML = 'AUTORES';
+			document.getElementById(`table-name-${e.id}`).classList.add('table-name-authors');
+
+
+			var tdAwards = document.createElement('td');
+			tdAwards.innerHTML = `<input id="table-awards-${e.id}" class="table-awards" type="text" value="${e.awards}">`;
+			tr.appendChild(tdAwards);
+
+			var tdCountry = document.createElement('td');
+			tdCountry.innerHTML = `<input id="table-country-${e.id}" class="table-country" type="text" value="${e.country}">`;
+			tr.appendChild(tdCountry);
+
+		}
+
+		//BOTONES DE EDITAR Y BORRAR
+		var tdActions = document.createElement('td');
+
+		tdActions.innerHTML = '<a id="edit-' + e.id + '" row-id="' + e.id +'" class="flaticon-pen edit" tooltip="Editar Registro"></a>';
+		tdActions.innerHTML = tdActions.innerHTML + '<a id="delete-' + e.id + '" row-id="' + e.id +'" class="flaticon-eraser delete" tooltip="Borrar Registro"></a>';
+		tdActions.innerHTML = tdActions.innerHTML + '<a id="save-' + e.id + '" row-id="' + e.id +'" class="flaticon-plus save" tooltip="Guardar Cambios"></a>';
+		tdActions.innerHTML = tdActions.innerHTML + '<a id="cancel-' + e.id + '" row-id="' + e.id +'" class="flaticon-log-out cancel" tooltip="Descartar Cambios"></a>';
 		
-				var tdId = document.createElement('td');
-				tdId.innerHTML = e.id;
-				tr.appendChild(tdId);
-		
-				var tdName = document.createElement('td');
-				tdName.innerHTML = e.name;
-				tr.appendChild(tdName);
-				
-				var tdSurname = document.createElement('td');
-				tdSurname.innerHTML = e.surname;
-				tr.appendChild(tdSurname);
-		
-				var tdDomicilie = document.createElement('td');
-				tdDomicilie.innerHTML = e.domicilie;
-				tr.appendChild(tdDomicilie);
-		
-				var tdProvince = document.createElement('td');
-				tdProvince.innerHTML = e.province;
-				tr.appendChild(tdProvince);
-		
-				var tdDateOfBirth = document.createElement('td');
-				tdDateOfBirth.innerHTML = e.date_of_birth;
-				tr.appendChild(tdDateOfBirth);
-		
-				var tdPassword = document.createElement('td');
-				tdPassword.innerHTML = e.password;
-				tr.appendChild(tdPassword);
-		
-				//BOTONES DE EDITAR Y BORRAR
-				var tdActions = document.createElement('td');
-				tdActions.innerHTML = '<a id="edit-' + e.id +'" class="flaticon-pen"></a>';
-				tdActions.innerHTML = tdActions.innerHTML + '<a id="delete-' + e.id +'" class="flaticon-eraser"></a>';
-				tr.appendChild(tdActions);
-			});
-		break;
-		case 'loans':
-			document.getElementById('section-name').innerHTML = 'Préstamos';
-			data.forEach(e => {
-				var tr = document.createElement('tr');
-				tableBody.appendChild(tr);
+		tr.appendChild(tdActions);
 
-				var tdId = document.createElement('td');
-				tdId.innerHTML = e.id;
-				tr.appendChild(tdId);
-
-				var tdIdBook = document.createElement('td');
-				tdIdBook.innerHTML = e.book_id;
-				tr.appendChild(tdIdBook);
-
-				var tdIdUser = document.createElement('td');
-				tdIdUser.innerHTML = e.user_id;
-				tr.appendChild(tdIdUser);
-
-				var tdDateIn = document.createElement('td');
-				tdDateIn.innerHTML = e.loan_date_in;
-				tr.appendChild(tdDateIn);
-
-				var tdDateOut = document.createElement('td');
-				tdDateOut.innerHTML = e.loan_date_out;
-				tr.appendChild(tdDateOut);
-
-				//BOTONES DE EDITAR Y BORRAR
-				var tdActions = document.createElement('td');
-				tdActions.innerHTML = '<a id="edit-' + e.id +'" class="flaticon-pen"></a>';
-				tdActions.innerHTML = tdActions.innerHTML + '<a id="delete-' + e.id +'" class="flaticon-eraser"></a>';
-				tr.appendChild(tdActions);
-			});
-		break;
-		case 'books':
-			document.getElementById('section-name').innerHTML = 'Libros';
-			data.forEach(e => {
-				var tr = document.createElement('tr');
-				tableBody.appendChild(tr);
-
-				var tdId = document.createElement('td');
-				tdId.innerHTML = e.id;
-				tr.appendChild(tdId);
-
-				var tdName = document.createElement('td');
-				tdName.innerHTML = e.name;
-				tr.appendChild(tdName);
-
-				var tdEditorial = document.createElement('td');
-				tdEditorial.innerHTML = e.editorial;
-				tr.appendChild(tdEditorial);
-
-				var tdGender = document.createElement('td');
-				tdGender.innerHTML = e.gender;
-				tr.appendChild(tdGender);
-
-				var tdPages = document.createElement('td');
-				tdPages.innerHTML = e.pages;
-				tr.appendChild(tdPages);
-
-				var tdYear = document.createElement('td');
-				tdYear.innerHTML = e.year;
-				tr.appendChild(tdYear);
-
-				var tdPrice = document.createElement('td');
-				tdPrice.innerHTML = e.price;
-				tr.appendChild(tdPrice);
-
-				var tdAuthorName = document.createElement('td');
-				tdAuthorName.innerHTML = e.author_name;
-				tr.appendChild(tdAuthorName);
-
-				var tdAuthorCountry = document.createElement('td');
-				tdAuthorCountry.innerHTML = e.author_country;
-				tr.appendChild(tdAuthorCountry);
-
-				//BOTONES DE EDITAR Y BORRAR
-				var tdActions = document.createElement('td');
-				tdActions.innerHTML = '<a id="edit-' + e.id +'" class="flaticon-pen"></a>';
-				tdActions.innerHTML = tdActions.innerHTML + '<a id="delete-' + e.id +'" class="flaticon-eraser"></a>';
-				tr.appendChild(tdActions);
-			});
-		break;
-		case 'coupons':
-			document.getElementById('section-name').innerHTML = 'Cupones';
-			data.forEach(e => {
-				var tr = document.createElement('tr');
-				tableBody.appendChild(tr);
-
-				var tdId = document.createElement('td');
-				tdId.innerHTML = e.id;
-				tr.appendChild(tdId);
-
-				var tdMount = document.createElement('td');
-				tdMount.innerHTML = '$' + e.mount;
-				tr.appendChild(tdMount);
-
-				//BOTONES DE EDITAR Y BORRAR
-				var tdActions = document.createElement('td');
-				tdActions.innerHTML = '<a id="edit-' + e.id +'" class="flaticon-pen"></a>';
-				tdActions.innerHTML = tdActions.innerHTML + '<a id="delete-' + e.id +'" class="flaticon-eraser"></a>';
-				tr.appendChild(tdActions);
-			});
-		break;
-	}
+		document.getElementById(`save-${e.id}`).style.display = 'none';
+		document.getElementById(`cancel-${e.id}`).style.display = 'none';
+	});
 
 }
 

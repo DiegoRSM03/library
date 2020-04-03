@@ -21,6 +21,7 @@
 			<a id="nav-loans"><span class="flaticon-shopping-cart"></span> Préstamos</a>
 			<a id="nav-books"><span class="flaticon-book"></span> Libros</a>
 			<a id="nav-coupons"><span class="flaticon-view"></span> Cupones</a>
+			<a id="nav-authors"><span class="flaticon-pen"></span> Autores</a>
 			<a id="settings"><span class="flaticon-settings"></span> Ajustes</a>
 		</nav>
 	</header>

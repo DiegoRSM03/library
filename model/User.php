@@ -94,6 +94,7 @@ class User {
 	public static function getUsers ($start, $stop) {
 
 		$data = array();
+		$i = 0;
 
 		try {
 
@@ -105,6 +106,7 @@ class User {
 
 			while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 				array_push($data, $row);
+				$i++;
 			}
 			Connection::disconnect($dbh);
 			return $data;
