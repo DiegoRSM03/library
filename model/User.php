@@ -131,22 +131,11 @@ class User {
 			$sql = 'UPDATE users SET name=:name, surname=:surname, domicilie=:domicilie, province=:province, date_of_birth=:dateOfBirth, password=:password WHERE id=:id';
 			$result = $dbh->prepare($sql);
 
-			if (!isset($_COOKIE['edit_settings_user']) || $_COOKIE['edit_settings_user'] == 'no') {
-
-				$result->bindValue(':dateOfBirth', $newValues['date']);
-				$result->bindValue(':domicilie', $newValues['domicilie']);
-
-			} else if ($_COOKIE['edit_settings_user'] == 'yes') {
-				$date = $newValues['date']['year'] . '-' . $newValues['date']['month'] . '-' . $newValues['date']['day'];
-				$domicilie = $newValues['domicilie'] . " " . $newValues['directionNumber'];
-
-				$result->bindValue(':dateOfBirth', $date);
-				$result->bindValue(':domicilie', $domicilie);
-			}
-
 			$result->bindValue(':name', $newValues['name']);
 			$result->bindValue(':surname', $newValues['surname']);
+			$result->bindValue(':domicilie', $newValues['domicilie']);
 			$result->bindValue(':province', $newValues['province']);
+			$result->bindValue(':dateOfBirth', $newValues['date']);
 			$result->bindValue(':password', $newValues['password']);
 			$result->bindValue(':id', $id);
 			$result->execute();

@@ -47,6 +47,40 @@ class Book {
 
 	}
 
+	public static function updateBook ($id, $newValues) {
+
+		$data = array();
+
+		try {
+
+			$dbh = Connection::connect();
+	
+			$sql = 'UPDATE books SET name=:name, editorial=:editorial, gender=:gender, pages=:pages, year=:year, price=:price, author_id=:author WHERE id=:id';
+			$result = $dbh->prepare($sql);
+
+			$result->bindValue(':name', $newValues['name']);
+			$result->bindValue(':editorial', $newValues['editorial']);
+			$result->bindValue(':gender', $newValues['gender']);
+			$result->bindValue(':pages', $newValues['pages']);
+			$result->bindValue(':year', $newValues['year']);
+			$result->bindValue(':price', $newValues['price']);
+			$result->bindValue(':author', $newValues['author']);
+			$result->bindValue(':id', $id);
+			$result->execute();
+	
+			array_push($data, array('status' => 'successful'));
+			Connection::disconnect($dbh);
+			
+		} catch (Exception $e) {
+			
+			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
+			array_push($data, array('status' => 'failure'));
+			
+		}
+		return $data;
+
+	}
+
 }
 
 ?>

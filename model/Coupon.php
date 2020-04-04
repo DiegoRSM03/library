@@ -30,6 +30,34 @@ class Coupon {
 
 	}
 
+	public static function updateCoupon ($id, $newValues) {
+
+		$data = array();
+
+		try {
+
+			$dbh = Connection::connect();
+	
+			$sql = 'UPDATE coupons SET mount=:mount WHERE id=:id';
+			$result = $dbh->prepare($sql);
+
+			$result->bindValue(':mount', $newValues['mount']);
+			$result->bindValue(':id', $id);
+			$result->execute();
+	
+			array_push($data, array('status' => 'successful'));
+			Connection::disconnect($dbh);
+			
+		} catch (Exception $e) {
+			
+			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
+			array_push($data, array('status' => 'failure'));
+			
+		}
+		return $data;
+
+	}
+
 }
 
 ?>

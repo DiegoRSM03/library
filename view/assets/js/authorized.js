@@ -61,7 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		var directionNumber = document.getElementById('settings-domicilie-number').value;
 
-		fetchEditUser(formStrings, formDates, directionNumber, 'form-settings');
+		var infoUser = [formStrings, formDates, directionNumber];
+
+		fetchEditUser(infoUser, 'form-settings', true);
 		sessionStorage.setItem('settingsOn', 'no');
 		fetchUserInfo();
 
@@ -150,70 +152,77 @@ async function fetchUserInfo () {
 
 }
 
-async function fetchEditUser (formStrings, formDates, directionNumber, formId) {
-
+async function fetchEditUser (infoUser, formId, validate) {
+	
 	var follow = false;
-	var numbersInString = '';
-	var lettersInDate = false;
-	var lettersInDomicilieNumber = false;
+	if (validate == true) {
 
-	//VERIFICAR NOMBRE, APELLIDO, DIRECCION Y PROVINCIA
-	if (formStrings[0].length < 3 || formStrings[1].length < 4 || formStrings[2].length < 4 || formStrings[3].length < 4) {
-		document.getElementById('pending').innerHTML = '<p>Recuerda que: Los caracteres minimos son 3(Nombre), 5(Apellido), 5(Provincia).</p>';
-		sendSignStatus('pending', 3000);
-	} else {
-		// VERIFICANDO SI HAY LETRAS EN LOS CAMPOS: NOMBRE, APELLIDO, CALLE DOM Y PROVINCIA
-		formStrings.forEach(e => {
-			for (let i=0 ; i<e.length ; i++) {
-				if (!isNaN(e.charAt(i)) && e.charAt(i) != ' ') {
-					numbersInString = e;
+		var numbersInString = '';
+		var lettersInDate = false;
+		var lettersInDomicilieNumber = false;
+
+		//VERIFICAR NOMBRE, APELLIDO, DIRECCION Y PROVINCIA
+		if (infoUser[0][0].length < 3 || infoUser[0][1].length < 4 || infoUser[0][2].length < 4 || infoUser[0][3].length < 4) {
+			document.getElementById('pending').innerHTML = '<p>Recuerda que: Los caracteres minimos son 3(Nombre), 5(Apellido), 5(Provincia).</p>';
+			sendSignStatus('pending', 3000);
+		} else {
+			// VERIFICANDO SI HAY LETRAS EN LOS CAMPOS: NOMBRE, APELLIDO, CALLE DOM Y PROVINCIA
+			infoUser[0].forEach(e => {
+				for (let i=0 ; i<e.length ; i++) {
+					if (!isNaN(e.charAt(i)) && e.charAt(i) != ' ') {
+						numbersInString = e;
+					}
+				}
+			});
+			if (numbersInString != '') {
+				document.getElementById('pending').innerHTML = '<p>Recuerda que: En los campos Nombre, Apellido, Calle de domicilio y Ciudad, no deben ir numeros.</p>';
+				sendSignStatus('pending', 3000);
+			}
+		}
+
+		const currentDate = new Date();
+		const age = currentDate.getFullYear();
+		if (infoUser[1][0] > age || infoUser[1][0] < 1900 || (infoUser[1][1] > 12 && infoUser[1][1] > 0) || (infoUser[1][2] > 31 && infoUser[1][2] > 0)) {
+			document.getElementById('pending').innerHTML = '<p>Recuerda que: Los campos correspondientes a la fecha, tienen que ser realistas.</p>';
+			sendSignStatus('pending', 3000);
+		} else {
+			// VERIFICANDO SI HAY LETRAS EN LOS CAMPOS CORRESPONDIENTES A FECHA
+			infoUser[1].forEach(e => {
+				for (let i=0 ; i<e.length ; i++) {
+					if (isNaN(e.charAt(i))) {
+						lettersInDate = true;
+					} 
+				}
+			});
+			if (lettersInDate) {
+				document.getElementById('pending').innerHTML = '<p>Recuerda que: En los campos de fecha no se deben colocar letras, y el campo año debe tener 4 caracteres</p>';
+				sendSignStatus('pending', 3000);
+			}
+		}
+
+		if (infoUser[2] < 1) {
+			document.getElementById('pending').innerHTML = '<p>Recuerda que: La altura de la calle no puede ser 0</p>';
+			sendSignStatus('pending', 3000);
+		} else {
+			// VERIFICANDO SI HAY LETRAS EN EL CAMPO CORRESPONDIENTE A LA ALTURA DE LA CALLE DE DOMICILIO
+			for (let i=0 ; i<infoUser[2].length ; i++) {
+				if (isNaN(infoUser[2].charAt(i))) {
+					lettersInDomicilieNumber = true;
 				}
 			}
-		});
-		if (numbersInString != '') {
-			document.getElementById('pending').innerHTML = '<p>Recuerda que: En los campos Nombre, Apellido, Calle de domicilio y Ciudad, no deben ir numeros.</p>';
-			sendSignStatus('pending', 3000);
-		}
-	}
-
-	const currentDate = new Date();
-	const age = currentDate.getFullYear();
-	if (formDates[0] > age || formDates[0] < 1900 || (formDates[1] > 12 && formDates[1] > 0) || (formDates[2] > 31 && formDates[2] > 0)) {
-		document.getElementById('pending').innerHTML = '<p>Recuerda que: Los campos correspondientes a la fecha, tienen que ser realistas.</p>';
-		sendSignStatus('pending', 3000);
-	} else {
-		// VERIFICANDO SI HAY LETRAS EN LOS CAMPOS CORRESPONDIENTES A FECHA
-		formDates.forEach(e => {
-			for (let i=0 ; i<e.length ; i++) {
-				if (isNaN(e.charAt(i))) {
-					lettersInDate = true;
-				} 
-			}
-		});
-		if (lettersInDate) {
-			document.getElementById('pending').innerHTML = '<p>Recuerda que: En los campos de fecha no se deben colocar letras, y el campo año debe tener 4 caracteres</p>';
-			sendSignStatus('pending', 3000);
-		}
-	}
-	
-	if (directionNumber < 1) {
-		document.getElementById('pending').innerHTML = '<p>Recuerda que: La altura de la calle no puede ser 0</p>';
-		sendSignStatus('pending', 3000);
-	} else {
-		// VERIFICANDO SI HAY LETRAS EN EL CAMPO CORRESPONDIENTE A LA ALTURA DE LA CALLE DE DOMICILIO
-		for (let i=0 ; i<directionNumber.length ; i++) {
-			if (isNaN(directionNumber.charAt(i))) {
-				lettersInDomicilieNumber = true;
+			if (lettersInDomicilieNumber) {
+				document.getElementById('pending').innerHTML = '<p>Recuerda que: No pueden haber letras en el campo de numero de domicilio</p>';
+				sendSignStatus('pending', 3000);
 			}
 		}
-		if (lettersInDomicilieNumber) {
-			document.getElementById('pending').innerHTML = '<p>Recuerda que: No pueden haber letras en el campo de numero de domicilio</p>';
-			sendSignStatus('pending', 3000);
-		}
+
+		// VERIFICANDO SI SE CUMPLEN LOS REQUISITOS PARA QUE PUEDA REGISTRARSE EL USUARIO
+		(numbersInString != '' || lettersInDate || lettersInDomicilieNumber || infoUser[1][0].length != 4) ? follow = false : follow = true;
+
+	} else {
+		follow = true;
 	}
 
-	// VERIFICANDO SI SE CUMPLEN LOS REQUISITOS PARA QUE PUEDA REGISTRARSE EL USUARIO
-	(numbersInString != '' || lettersInDate || lettersInDomicilieNumber || formDates[0].length != 4) ? follow = false : follow = true;
 	if (follow) {
 		if (!isNaN(formId.charAt(0))) {
 
@@ -226,15 +235,39 @@ async function fetchEditUser (formStrings, formDates, directionNumber, formId) {
 				form.append('table-surname', document.getElementById(`table-surname-${formId}`).value)
 			}
 			if (getCookie('current_section') == 'users') {
+
 				form.append('table-domicilie', document.getElementById(`table-domicilie-${formId}`).value);
 				form.append('table-province', document.getElementById(`table-province-${formId}`).value);
 				form.append('table-date-of-birth', document.getElementById(`table-date-of-birth-${formId}`).value);
 				form.append('table-password', document.getElementById(`table-password-${formId}`).value);
+
 			} else if (getCookie('current_section') == 'loans') {
+
+				form.append('table-book', document.getElementById(`table-book-${formId}`).value);
+				form.append('table-user', document.getElementById(`table-user-${formId}`).value);
+				form.append('table-loan-in', document.getElementById(`table-loan-in-${formId}`).value);
+				form.append('table-loan-out', document.getElementById(`table-loan-out-${formId}`).value);
 
 			} else if (getCookie('current_section') == 'books') {
 
+				form.append('table-name', document.getElementById(`table-name-${formId}`).value);
+				form.append('table-editorial', document.getElementById(`table-editorial-${formId}`).value);
+				form.append('table-gender', document.getElementById(`table-gender-${formId}`).value);
+				form.append('table-pages', document.getElementById(`table-pages-${formId}`).value);
+				form.append('table-year', document.getElementById(`table-year-${formId}`).value);
+				form.append('table-price', document.getElementById(`table-price-${formId}`).value);
+				form.append('table-author', document.getElementById(`table-author-${formId}`).value);
+
+			} else if (getCookie('current_section') == 'coupons') {
+
+				form.append('table-mount', document.getElementById(`table-mount-${formId}`).value);
+
 			} else {
+
+				form.append('table-name', document.getElementById(`table-name-${formId}`).value);
+				form.append('table-surname', document.getElementById(`table-surname-${formId}`).value);
+				form.append('table-awards', document.getElementById(`table-awards-${formId}`).value);
+				form.append('table-country', document.getElementById(`table-country-${formId}`).value);
 
 			}
 
@@ -498,16 +531,23 @@ function tableSaveEdit (id) {
 		
 			var date = document.getElementById(`table-date-of-birth-${id}`).value;
 			var formDates = date.split('-');
+
+			var infoUser = [formStrings, formDates, domicilieNumber];
 		
-			fetchEditUser(formStrings, formDates, domicilieNumber, id);
+			fetchEditUser(infoUser, id, true);
 		break;
 		case 'loans':
-			var book = document.getElementById(`table-book-${id}`).value;
-			var user = document.getElementById(`table-user-${id}`).value;
-			var loanIn = document.getElementById(`table-loan-in-${id}`).value;
-			var loanOut = document.getElementById(`table-loan-out-${id}`).value;
-
-			fetchEditUser(formStrings, formDates, domicilieNumber, id);
+			fetchEditUser([], id, false);
+		break;
+		case 'books':
+			fetchEditUser([], id, false);
+		break;
+		case 'coupons':
+			fetchEditUser([], id, false);
+		break;
+		case 'authors':
+			fetchEditUser([], id, false);
+		break;
 	}
 	
 }

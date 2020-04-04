@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
 	if (localStorage.getItem('remember') == 'yes') {
-		window.location = 'http://localhost/5-library/view/authorized/authorized.php';
+		window.location = 'http://localhost/5-library/view/authorized.php';
 	}
 
 	//PINTANDO LA SECCION ACTUAL DEL USUARIO DEPENDIENDO SI ES SIGNIN O SIGNUP
