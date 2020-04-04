@@ -368,7 +368,7 @@ header {
             #banner-authorized .content #section table tbody tr td [id^=save] {
               background-color: #546807; }
             #banner-authorized .content #section table tbody tr td [id^=cancel] {
-              background-color: #C3A50C; }
+              background-color: #680707; }
             #banner-authorized .content #section table tbody tr td:first-child {
               padding-left: 3rem; }
           #banner-authorized .content #section table tbody tr:nth-child(2n) {
@@ -448,7 +448,7 @@ header {
   .settings .info > div {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     color: #A1A1A1;
     font-family: 'Roboto';
     font-size: 1.2rem;
@@ -456,6 +456,16 @@ header {
     margin: .5rem 0; }
     .settings .info > div span {
       margin-right: .5rem; }
+    .settings .info > div input {
+      width: 100%; }
+    .settings .info > div .domicilie,
+    .settings .info > div .date {
+      display: flex;
+      flex-flow: row nowrap;
+      width: 100%; }
+      .settings .info > div .domicilie input,
+      .settings .info > div .date input {
+        flex: 1 1 auto; }
   .settings .buttons #save-cancel {
     display: flex;
     justify-content: space-between; }

@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 	
 	//CAMBIA FONDO DE PANTALLA Y DESPUES CADA 8S
-	//fetchBackground();
-	//setInterval(() => fetchBackground(), 8000);
+	fetchBackground();
+	setInterval(() => fetchBackground(), 8000);
 
 	//OBTIENE LOS PRIMEROS 5 LIBROS DE LA BASE DE DATOS
 	fetchSuggestions();
@@ -121,7 +121,7 @@ async function fetchSignIn () {
 				localStorage.setItem('remember', 'no');
 			}
 			document.cookie = 'id=' + id + '; path=/';
-			window.location = 'http://localhost/5-library/view/authorized/authorized.php';
+			window.location = 'http://localhost/5-library/view/authorized.php';
 		} else {
 			document.getElementById('failure').innerHTML = '<p>El id y contraseña ingresados no coincide</p><p>Intenta registrarte primero</p>'
 			sendSignStatus('failure', 2000);
@@ -141,8 +141,6 @@ async function fetchSignUp () {
 	var lettersInDate = false;
 	var lettersInDomicilieNumber = false;
 	
-
-
 	var name = document.getElementById('name').value;
 	var surname = document.getElementById('surname').value;
 	var province = document.getElementById('province').value;
@@ -165,8 +163,6 @@ async function fetchSignUp () {
 			sendSignStatus('pending', 3000);
 		}
 	}
-
-
 
 	var dateDay = document.getElementById('date-day').value;
 	var dateMonth = document.getElementById('date-month').value;
@@ -192,8 +188,6 @@ async function fetchSignUp () {
 			sendSignStatus('pending', 3000);
 		}
 	}
-
-
 
 	var directionNumber = document.getElementById('direction-number').value;
 	if (directionNumber < 1) {

@@ -45,7 +45,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	//BOTON DE GUARDAR LA EDICION DEL USUARIO
 	document.getElementById('button-save').addEventListener('click', () => {
-		fetchEditUser();
+
+		document.cookie = 'edit_settings_user=yes; path=/';
+
+		var name = document.getElementById('settings-name').value;
+		var surname = document.getElementById('settings-surname').value;
+		var province = document.getElementById('settings-province').value;
+		var domicilie = document.getElementById('settings-domicilie-string').value;
+		var formStrings = [name, surname, province, domicilie];
+
+		var dateYear = document.getElementById('settings-date-year').value;
+		var dateMonth = document.getElementById('settings-date-month').value;
+		var dateDay = document.getElementById('settings-date-day').value;
+		var formDates = [dateYear, dateMonth, dateDay];
+
+		var directionNumber = document.getElementById('settings-domicilie-number').value;
+
+		fetchEditUser(formStrings, formDates, directionNumber, 'form-settings');
+		sessionStorage.setItem('settingsOn', 'no');
+		fetchUserInfo();
+
 	});
 
 	//BOTON DE CERRAR SESIÓN EN AJUSTES
@@ -53,8 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		localStorage.removeItem('remember');
 		window.location = 'http://localhost/5-library/index.php';
 	});
-
-
 
 	//PREPARANDO LAS SECCIONES PARA SER CONSULTADAS
 	var sections = [
@@ -121,12 +138,10 @@ async function fetchUserInfo () {
 
 		document.getElementById('settings-domicilie-string').value = domicilieString;
 		document.getElementById('settings-domicilie-number').value = domicilieNumber;
-
 		
 		document.getElementById('settings-date-day').value = data[0].date_of_birth.substring(8,10);
 		document.getElementById('settings-date-month').value = data[0].date_of_birth.substring(5,7);
 		document.getElementById('settings-date-year').value = data[0].date_of_birth.substring(0,4);
-		
 		
 		document.getElementById('settings-province').value = data[0].province;
 		document.getElementById('settings-password').value = data[0].password;
@@ -135,22 +150,15 @@ async function fetchUserInfo () {
 
 }
 
-async function fetchEditUser () {
+async function fetchEditUser (formStrings, formDates, directionNumber, formId) {
 
 	var follow = false;
 	var numbersInString = '';
 	var lettersInDate = false;
 	var lettersInDomicilieNumber = false;
-	
 
-
-	var name = document.getElementById('settings-name').value;
-	var surname = document.getElementById('settings-surname').value;
-	var province = document.getElementById('settings-province').value;
-	var domicilie = document.getElementById('settings-domicilie-string').value;
-	var formStrings = [name, surname, province, domicilie];
-
-	if (name.length < 3 || surname.length < 4 || domicilie.length < 4 || province.length < 4) {
+	//VERIFICAR NOMBRE, APELLIDO, DIRECCION Y PROVINCIA
+	if (formStrings[0].length < 3 || formStrings[1].length < 4 || formStrings[2].length < 4 || formStrings[3].length < 4) {
 		document.getElementById('pending').innerHTML = '<p>Recuerda que: Los caracteres minimos son 3(Nombre), 5(Apellido), 5(Provincia).</p>';
 		sendSignStatus('pending', 3000);
 	} else {
@@ -158,7 +166,6 @@ async function fetchEditUser () {
 		formStrings.forEach(e => {
 			for (let i=0 ; i<e.length ; i++) {
 				if (!isNaN(e.charAt(i)) && e.charAt(i) != ' ') {
-					console.log(numbersInString.charAt(i));
 					numbersInString = e;
 				}
 			}
@@ -169,16 +176,9 @@ async function fetchEditUser () {
 		}
 	}
 
-
-
-	var dateDay = document.getElementById('settings-date-day').value;
-	var dateMonth = document.getElementById('settings-date-month').value;
-	var dateYear = document.getElementById('settings-date-year').value;
-	var formDates = [dateDay, dateMonth, dateYear];
-
 	const currentDate = new Date();
 	const age = currentDate.getFullYear();
-	if (dateYear > age || dateYear < 1900 || (dateMonth > 12 && dateMonth > 0) || (dateDay > 31 && dateDay > 0)) {
+	if (formDates[0] > age || formDates[0] < 1900 || (formDates[1] > 12 && formDates[1] > 0) || (formDates[2] > 31 && formDates[2] > 0)) {
 		document.getElementById('pending').innerHTML = '<p>Recuerda que: Los campos correspondientes a la fecha, tienen que ser realistas.</p>';
 		sendSignStatus('pending', 3000);
 	} else {
@@ -195,10 +195,7 @@ async function fetchEditUser () {
 			sendSignStatus('pending', 3000);
 		}
 	}
-
-
-
-	var directionNumber = document.getElementById('settings-domicilie-number').value;
+	
 	if (directionNumber < 1) {
 		document.getElementById('pending').innerHTML = '<p>Recuerda que: La altura de la calle no puede ser 0</p>';
 		sendSignStatus('pending', 3000);
@@ -216,16 +213,40 @@ async function fetchEditUser () {
 	}
 
 	// VERIFICANDO SI SE CUMPLEN LOS REQUISITOS PARA QUE PUEDA REGISTRARSE EL USUARIO
-	(numbersInString != '' || lettersInDate || lettersInDomicilieNumber || dateYear.length != 4) ? follow = false : follow = true;
+	(numbersInString != '' || lettersInDate || lettersInDomicilieNumber || formDates[0].length != 4) ? follow = false : follow = true;
 	if (follow) {
+		if (!isNaN(formId.charAt(0))) {
 
-		var form = new FormData(document.getElementById('form-settings'));
+			var form = new FormData();
+			
+			if (getCookie('current_section') == 'users' || getCookie('current_section') == 'books' || getCookie('current_section') == 'authors') {
+				form.append('table-name', document.getElementById(`table-name-${formId}`).value)
+			}
+			if (getCookie('current_section') == 'users' || getCookie('current_section') == 'authors') {
+				form.append('table-surname', document.getElementById(`table-surname-${formId}`).value)
+			}
+			if (getCookie('current_section') == 'users') {
+				form.append('table-domicilie', document.getElementById(`table-domicilie-${formId}`).value);
+				form.append('table-province', document.getElementById(`table-province-${formId}`).value);
+				form.append('table-date-of-birth', document.getElementById(`table-date-of-birth-${formId}`).value);
+				form.append('table-password', document.getElementById(`table-password-${formId}`).value);
+			} else if (getCookie('current_section') == 'loans') {
+
+			} else if (getCookie('current_section') == 'books') {
+
+			} else {
+
+			}
+
+		} else if (formId == 'form-settings') {
+			var form = new FormData(document.getElementById(formId));
+		}
+		
 		var response = await fetch('http://localhost/5-library/controller/api/update.php', {
 			method: 'POST',
 			body: form
 		});
 		var data = await response.json();
-		console.log(data);
 
 		if (data[0].status == 'successful') {
 			document.getElementById('successful').innerHTML = '<p>Usuario editado con éxito</p>';
@@ -242,8 +263,7 @@ async function fetchEditUser () {
 			document.getElementsByClassName('settings-input')[i].disabled = true;
 			document.getElementsByClassName('settings-input')[i].style.backgroundColor = 'rgba(200, 200, 200, .1)';
 		}
-		sessionStorage.setItem('settingsOn', 'no');
-		fetchUserInfo();
+		document.cookie = 'edit_settings_user=no; path=/';
 
 	}
 	
@@ -294,14 +314,14 @@ async function fetchSection (section, prev, next) {
 
 		if (section == 'users' || section == 'books' || section == 'authors') {
 			var tdName = document.createElement('td');
-			tdName.innerHTML = `<input id="table-name-${e.id}" type="text" value="${e.name}">`;
+			tdName.innerHTML = `<input id="table-name-${e.id}" class="row-${e.id}" type="text" value="${e.name}">`;
 			tr.appendChild(tdName);
 		}
 
 		if (section == 'users' || section == 'authors') {
 
 			var tdSurname = document.createElement('td');
-			tdSurname.innerHTML = `<input id="table-surname-${e.id}" class="table-surname" type="text" value="${e.surname}">`;
+			tdSurname.innerHTML = `<input id="table-surname-${e.id}" class="table-surname row-${e.id}" type="text" value="${e.surname}">`;
 			tr.appendChild(tdSurname);
 
 		}
@@ -312,19 +332,19 @@ async function fetchSection (section, prev, next) {
 			document.getElementById(`table-name-${e.id}`).classList.add('table-name-users');
 	
 			var tdDomicilie = document.createElement('td');
-			tdDomicilie.innerHTML = `<input id="table-domicilie-${e.id}" class="table-domicilie" type="text" value="${e.domicilie}">`;
+			tdDomicilie.innerHTML = `<input id="table-domicilie-${e.id}" class="table-domicilie row-${e.id}" type="text" value="${e.domicilie}">`;
 			tr.appendChild(tdDomicilie);
 	
 			var tdProvince = document.createElement('td');
-			tdProvince.innerHTML = `<input id="table-province-${e.id}" class="table-province" type="text" value="${e.province}">`;
+			tdProvince.innerHTML = `<input id="table-province-${e.id}" class="table-province row-${e.id}" type="text" value="${e.province}">`;
 			tr.appendChild(tdProvince);
 	
 			var tdDateOfBirth = document.createElement('td');
-			tdDateOfBirth.innerHTML = `<input id="table-date-of-birth-${e.id}" class="table-date-of-birth" type="text" value="${e.date_of_birth}">`;
+			tdDateOfBirth.innerHTML = `<input id="table-date-of-birth-${e.id}" class="table-date-of-birth row-${e.id}" type="text" value="${e.date_of_birth}">`;
 			tr.appendChild(tdDateOfBirth);
 	
 			var tdPassword = document.createElement('td');
-			tdPassword.innerHTML = `<input id="table-password-${e.id}" class="table-password" type="text" value="${e.password}">`;
+			tdPassword.innerHTML = `<input id="table-password-${e.id}" class="table-password row-${e.id}" type="text" value="${e.password}">`;
 			tr.appendChild(tdPassword);
 
 		} else if (section == 'loans') {
@@ -332,19 +352,19 @@ async function fetchSection (section, prev, next) {
 			document.getElementById('section-name').innerHTML = 'PRÉSTAMOS';
 
 			var tdIdBook = document.createElement('td');
-			tdIdBook.innerHTML = `<input id="table-book-${e.id}" class="table-book" type="text" value="${e.book_id}">`;
+			tdIdBook.innerHTML = `<input id="table-book-${e.id}" class="table-book row-${e.id}" type="text" value="${e.book_id}">`;
 			tr.appendChild(tdIdBook);
 
 			var tdIdUser = document.createElement('td');
-			tdIdUser.innerHTML = `<input id="table-user-${e.id}" class="table-user" type="text" value="${e.user_id}">`;
+			tdIdUser.innerHTML = `<input id="table-user-${e.id}" class="table-user row-${e.id}" type="text" value="${e.user_id}">`;
 			tr.appendChild(tdIdUser);
 
 			var tdDateIn = document.createElement('td');
-			tdDateIn.innerHTML = `<input id="table-loan-in-${e.id}" class="table-loan-in" type="text" value="${e.loan_date_in}">`;
+			tdDateIn.innerHTML = `<input id="table-loan-in-${e.id}" class="table-loan-in row-${e.id}" type="text" value="${e.loan_date_in}">`;
 			tr.appendChild(tdDateIn);
 
 			var tdDateOut = document.createElement('td');
-			tdDateOut.innerHTML = `<input id="table-loan-out-${e.id}" class="table-loan-out" type="text" value="${e.loan_date_out}">`;
+			tdDateOut.innerHTML = `<input id="table-loan-out-${e.id}" class="table-loan-out row-${e.id}" type="text" value="${e.loan_date_out}">`;
 			tr.appendChild(tdDateOut);
 
 		} else if (section == 'books') {
@@ -353,27 +373,27 @@ async function fetchSection (section, prev, next) {
 			document.getElementById(`table-name-${e.id}`).classList.add('table-name-books');
 
 			var tdEditorial = document.createElement('td');
-			tdEditorial.innerHTML = `<input id="table-editorial-${e.id}" class="table-editorial" type="text" value="${e.editorial}">`;
+			tdEditorial.innerHTML = `<input id="table-editorial-${e.id}" class="table-editorial row-${e.id}" type="text" value="${e.editorial}">`;
 			tr.appendChild(tdEditorial);
 
 			var tdGender = document.createElement('td');
-			tdGender.innerHTML = `<input id="table-gender-${e.id}" class="table-gender" type="text" value="${e.gender}">`;
+			tdGender.innerHTML = `<input id="table-gender-${e.id}" class="table-gender row-${e.id}" type="text" value="${e.gender}">`;
 			tr.appendChild(tdGender);
 
 			var tdPages = document.createElement('td');
-			tdPages.innerHTML = `<input id="table-pages-${e.id}" class="table-pages" type="text" value="${e.pages}">`;
+			tdPages.innerHTML = `<input id="table-pages-${e.id}" class="table-pages row-${e.id}" type="text" value="${e.pages}">`;
 			tr.appendChild(tdPages);
 
 			var tdYear = document.createElement('td');
-			tdYear.innerHTML = `<input id="table-year-${e.id}" class="table-year" type="text" value="${e.year}">`;
+			tdYear.innerHTML = `<input id="table-year-${e.id}" class="table-year row-${e.id}" type="text" value="${e.year}">`;
 			tr.appendChild(tdYear);
 
 			var tdPrice = document.createElement('td');
-			tdPrice.innerHTML = `<input id="table-price-${e.id}" class="table-price" type="text" value="${e.price}">`;
+			tdPrice.innerHTML = `<input id="table-price-${e.id}" class="table-price row-${e.id}" type="text" value="${e.price}">`;
 			tr.appendChild(tdPrice);
 
 			var tdAuthorCountry = document.createElement('td');
-			tdAuthorCountry.innerHTML = `<input id="table-author-${e.id}" class="table-author" type="text" value="${e.author_id}">`;
+			tdAuthorCountry.innerHTML = `<input id="table-author-${e.id}" class="table-author row-${e.id}" type="text" value="${e.author_id}">`;
 			tr.appendChild(tdAuthorCountry);
 
 		} else if (section == 'coupons') {
@@ -381,7 +401,7 @@ async function fetchSection (section, prev, next) {
 			document.getElementById('section-name').innerHTML = 'CUPONES';
 
 			var tdMount = document.createElement('td');
-			tdMount.innerHTML = `<input id="table-mount-${e.id}" class="table-mount" type="text" value="${e.mount}">`;
+			tdMount.innerHTML = `<input id="table-mount-${e.id}" class="table-mount row-${e.id}" type="text" value="${e.mount}">`;
 			tr.appendChild(tdMount);
 
 		} else {
@@ -391,11 +411,11 @@ async function fetchSection (section, prev, next) {
 
 
 			var tdAwards = document.createElement('td');
-			tdAwards.innerHTML = `<input id="table-awards-${e.id}" class="table-awards" type="text" value="${e.awards}">`;
+			tdAwards.innerHTML = `<input id="table-awards-${e.id}" class="table-awards row-${e.id}" type="text" value="${e.awards}">`;
 			tr.appendChild(tdAwards);
 
 			var tdCountry = document.createElement('td');
-			tdCountry.innerHTML = `<input id="table-country-${e.id}" class="table-country" type="text" value="${e.country}">`;
+			tdCountry.innerHTML = `<input id="table-country-${e.id}" class="table-country row-${e.id}" type="text" value="${e.country}">`;
 			tr.appendChild(tdCountry);
 
 		}
@@ -403,16 +423,102 @@ async function fetchSection (section, prev, next) {
 		//BOTONES DE EDITAR Y BORRAR
 		var tdActions = document.createElement('td');
 
-		tdActions.innerHTML = '<a id="edit-' + e.id + '" row-id="' + e.id +'" class="flaticon-pen edit" tooltip="Editar Registro"></a>';
-		tdActions.innerHTML = tdActions.innerHTML + '<a id="delete-' + e.id + '" row-id="' + e.id +'" class="flaticon-eraser delete" tooltip="Borrar Registro"></a>';
-		tdActions.innerHTML = tdActions.innerHTML + '<a id="save-' + e.id + '" row-id="' + e.id +'" class="flaticon-plus save" tooltip="Guardar Cambios"></a>';
-		tdActions.innerHTML = tdActions.innerHTML + '<a id="cancel-' + e.id + '" row-id="' + e.id +'" class="flaticon-log-out cancel" tooltip="Descartar Cambios"></a>';
+		tdActions.innerHTML = `<a id="edit-${e.id}" class="flaticon-pen edit" tooltip="Editar Registro"></a>`;
+		tdActions.innerHTML = tdActions.innerHTML + `<a id="delete-${e.id}" class="flaticon-eraser delete" tooltip="Borrar Registro"></a>`;
+		tdActions.innerHTML = tdActions.innerHTML + `<a id="save-${e.id}" class="flaticon-plus save" tooltip="Guardar Cambios"></a>`;
+		tdActions.innerHTML = tdActions.innerHTML + `<a id="cancel-${e.id}" class="flaticon-log-out cancel" tooltip="Finalizar Cambios"></a>`;
 		
 		tr.appendChild(tdActions);
-
 		document.getElementById(`save-${e.id}`).style.display = 'none';
 		document.getElementById(`cancel-${e.id}`).style.display = 'none';
+
+		//BOTON DE EDITAR REGISTRO EN TABLA
+		document.getElementById(`edit-${e.id}`).addEventListener('click', () => {
+			tableEdit(e.id);
+		});
+		//BOTON DE GUARDAR EDICION EN TABLA
+		document.getElementById(`save-${e.id}`).addEventListener('click', () => {
+			tableSaveEdit(e.id);
+		});
+		//BOTON DE CANCELAR EDICION EN TABLA
+		document.getElementById(`cancel-${e.id}`).addEventListener('click', () => {
+			tableCancelEdit(e.id);
+		});
+
 	});
+
+	var tableInputs = document.getElementsByTagName('input');
+	for (let i=0 ; i<tableInputs.length ; i++) {
+		tableInputs[i].disabled = true;
+	}
+
+}
+
+function tableEdit (id) {
+
+	document.cookie = 'current_id=' + id + '; path=/';
+
+	document.getElementById(`save-${id}`).style.display = 'inline-block';
+	document.getElementById(`cancel-${id}`).style.display = 'inline-block';
+
+	document.getElementById(`delete-${id}`).style.display = 'none';
+	document.getElementById(`edit-${id}`).style.display = 'none';
+
+	var tableInputs = document.getElementsByTagName('input');
+	for (let i=0 ; i<tableInputs.length ; i++) {
+		tableInputs[i].disabled = false;
+	}
+
+}
+
+function tableDelete (id) {
+	
+}
+
+function tableSaveEdit (id) {
+
+	switch (getCookie('current_section')) {
+		case 'users':
+			var name = document.getElementById(`table-name-${id}`).value;
+			var surname = document.getElementById(`table-surname-${id}`).value;
+			var province = document.getElementById(`table-province-${id}`).value;
+			var domicilieFull = document.getElementById(`table-domicilie-${id}`).value;
+		
+			var domicilieString = '';
+			var domicilieNumber = '';
+			for (let i=0 ; i<domicilieFull.length ; i++) {
+				if (isNaN(domicilieFull.charAt(i)) || domicilieFull.charAt(i) == ' ') {
+					domicilieString += domicilieFull.charAt(i);
+				} else {
+					domicilieNumber += domicilieFull.charAt(i);
+				}
+			}
+		
+			var formStrings = [name, surname, province, domicilieString];
+		
+			var date = document.getElementById(`table-date-of-birth-${id}`).value;
+			var formDates = date.split('-');
+		
+			fetchEditUser(formStrings, formDates, domicilieNumber, id);
+		break;
+		case 'loans':
+			var book = document.getElementById(`table-book-${id}`).value;
+			var user = document.getElementById(`table-user-${id}`).value;
+			var loanIn = document.getElementById(`table-loan-in-${id}`).value;
+			var loanOut = document.getElementById(`table-loan-out-${id}`).value;
+
+			fetchEditUser(formStrings, formDates, domicilieNumber, id);
+	}
+	
+}
+
+function tableCancelEdit (id) {
+
+	document.getElementById(`save-${id}`).style.display = 'none';
+	document.getElementById(`cancel-${id}`).style.display = 'none';
+
+	document.getElementById(`delete-${id}`).style.display = 'inline-block';
+	document.getElementById(`edit-${id}`).style.display = 'inline-block';
 
 }
 
