@@ -199,7 +199,7 @@ async function fetchEditUser (infoUser, formId, validate) {
 				sendSignStatus('pending', 3000);
 			}
 		}
-
+		
 		if (infoUser[2] < 1) {
 			document.getElementById('pending').innerHTML = '<p>Recuerda que: La altura de la calle no puede ser 0</p>';
 			sendSignStatus('pending', 3000);
@@ -215,17 +215,17 @@ async function fetchEditUser (infoUser, formId, validate) {
 				sendSignStatus('pending', 3000);
 			}
 		}
-
+		
 		// VERIFICANDO SI SE CUMPLEN LOS REQUISITOS PARA QUE PUEDA REGISTRARSE EL USUARIO
 		(numbersInString != '' || lettersInDate || lettersInDomicilieNumber || infoUser[1][0].length != 4) ? follow = false : follow = true;
-
+		
 	} else {
 		follow = true;
 	}
-
+	
 	if (follow) {
 		if (!isNaN(formId.charAt(0))) {
-
+			
 			var form = new FormData();
 			
 			if (getCookie('current_section') == 'users' || getCookie('current_section') == 'books' || getCookie('current_section') == 'authors') {
@@ -235,21 +235,21 @@ async function fetchEditUser (infoUser, formId, validate) {
 				form.append('table-surname', document.getElementById(`table-surname-${formId}`).value)
 			}
 			if (getCookie('current_section') == 'users') {
-
+				
 				form.append('table-domicilie', document.getElementById(`table-domicilie-${formId}`).value);
 				form.append('table-province', document.getElementById(`table-province-${formId}`).value);
 				form.append('table-date-of-birth', document.getElementById(`table-date-of-birth-${formId}`).value);
 				form.append('table-password', document.getElementById(`table-password-${formId}`).value);
 
 			} else if (getCookie('current_section') == 'loans') {
-
+				
 				form.append('table-book', document.getElementById(`table-book-${formId}`).value);
 				form.append('table-user', document.getElementById(`table-user-${formId}`).value);
 				form.append('table-loan-in', document.getElementById(`table-loan-in-${formId}`).value);
 				form.append('table-loan-out', document.getElementById(`table-loan-out-${formId}`).value);
 
 			} else if (getCookie('current_section') == 'books') {
-
+				
 				form.append('table-name', document.getElementById(`table-name-${formId}`).value);
 				form.append('table-editorial', document.getElementById(`table-editorial-${formId}`).value);
 				form.append('table-gender', document.getElementById(`table-gender-${formId}`).value);
@@ -257,18 +257,18 @@ async function fetchEditUser (infoUser, formId, validate) {
 				form.append('table-year', document.getElementById(`table-year-${formId}`).value);
 				form.append('table-price', document.getElementById(`table-price-${formId}`).value);
 				form.append('table-author', document.getElementById(`table-author-${formId}`).value);
-
+				
 			} else if (getCookie('current_section') == 'coupons') {
-
+				
 				form.append('table-mount', document.getElementById(`table-mount-${formId}`).value);
 
 			} else {
-
+				
 				form.append('table-name', document.getElementById(`table-name-${formId}`).value);
 				form.append('table-surname', document.getElementById(`table-surname-${formId}`).value);
 				form.append('table-awards', document.getElementById(`table-awards-${formId}`).value);
 				form.append('table-country', document.getElementById(`table-country-${formId}`).value);
-
+				
 			}
 
 		} else if (formId == 'form-settings') {
@@ -288,7 +288,7 @@ async function fetchEditUser (infoUser, formId, validate) {
 			document.getElementById('failure').innerHTML = '<p>Ocurrio un error al crear el usuario</p><p>Intentalo de nuevo</p>'
 			sendSignStatus('failure', 2000);
 		}
-
+		
 		//CONVIRTIENDO LOS INPUT A DESACTIVADOS YA QUE FINALIZÓ LA OPERACION
 		document.getElementById('save-cancel').style.display = 'none';
 		document.getElementById('button-edit').style.display = 'inline-block';
@@ -297,28 +297,9 @@ async function fetchEditUser (infoUser, formId, validate) {
 			document.getElementsByClassName('settings-input')[i].style.backgroundColor = 'rgba(200, 200, 200, .1)';
 		}
 		document.cookie = 'edit_settings_user=no; path=/';
-
+		
 	}
 	
-}
-
-function sendSignStatus (element, time) {
-
-	document.getElementById(element).style.transform = 'translateY(0)';
-	setTimeout(() => {
-		document.getElementById(element).style.transform = 'translateY(-100%)';
-	}, time);
-
-}
-
-function setTableHeaders (headers) {
-	document.getElementById('headers').innerHTML = '';
-	headers.forEach(e => {
-		var th = document.createElement('th');
-		th.innerHTML = e;
-		document.getElementById('headers').appendChild(th);
-	});
-	document.getElementById('headers').appendChild(document.createElement('th'));
 }
 
 async function fetchSection (section, prev, next) {
@@ -477,6 +458,10 @@ async function fetchSection (section, prev, next) {
 		document.getElementById(`cancel-${e.id}`).addEventListener('click', () => {
 			tableCancelEdit(e.id);
 		});
+		//BOTON DE ELIMINAR REGISTRO EN TABLA
+		document.getElementById(`delete-${e.id}`).addEventListener('click', () => {
+			tableDelete(e.id);
+		});
 
 	});
 
@@ -485,6 +470,31 @@ async function fetchSection (section, prev, next) {
 		tableInputs[i].disabled = true;
 	}
 
+}
+
+async function fetchDeleteUser (id) {
+
+	
+
+}
+
+function sendSignStatus (element, time) {
+
+	document.getElementById(element).style.transform = 'translateY(0)';
+	setTimeout(() => {
+		document.getElementById(element).style.transform = 'translateY(-100%)';
+	}, time);
+
+}
+
+function setTableHeaders (headers) {
+	document.getElementById('headers').innerHTML = '';
+	headers.forEach(e => {
+		var th = document.createElement('th');
+		th.innerHTML = e;
+		document.getElementById('headers').appendChild(th);
+	});
+	document.getElementById('headers').appendChild(document.createElement('th'));
 }
 
 function tableEdit (id) {
@@ -506,6 +516,21 @@ function tableEdit (id) {
 
 function tableDelete (id) {
 	
+	var warning = document.getElementById('warning');
+
+	warning.innerHTML = `<p>ADVERTENCIA: El registro cuyo numero de ID es ${id} será borrado permanentemente</p>`;
+	warning.innerHTML = warning.innerHTML + '<button id="delete-accept">Aceptar</button>';
+	warning.innerHTML = warning.innerHTML + '<button id="delete-cancel">Cancelar</button>';
+
+	document.getElementById('delete-accept').addEventListener('click', () => {
+		fetchDeleteUser(id);
+	});
+	document.getElementById('delete-cancel').addEventListener('click', () => {
+		warning.style.transform = 'translateY(-100%)';
+	});
+
+	warning.style.transform = 'translateY(0)';
+
 }
 
 function tableSaveEdit (id) {
