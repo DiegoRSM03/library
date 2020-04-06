@@ -81,6 +81,66 @@ class Book {
 
 	}
 
+	public static function deleteBook ($id) {
+
+		$data = array();
+
+		try {
+
+			$dbh = Connection::connect();
+	
+			$sql = 'DELETE FROM books WHERE id=:id';
+			$result = $dbh->prepare($sql);
+			
+			$result->bindValue(':id', $id);
+			$result->execute();
+	
+			array_push($data, array('status' => 'successful'));
+			Connection::disconnect($dbh);
+			
+		} catch (Exception $e) {
+			
+			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
+			array_push($data, array('status' => 'failure'));
+			
+		}
+		return $data;
+
+	}
+
+	public static function setBook ($infoUser) {
+
+		$data = array();
+
+		try {
+
+			$dbh = Connection::connect();
+	
+			$sql = 'INSERT INTO books (name, editorial, gender, pages, year, price, author_id) VALUES (:name, :editorial, :gender, :pages, :year, :price, :author)';
+			$result = $dbh->prepare($sql);
+
+			$result->bindValue(':name', $infoUser['name']);																			
+			$result->bindValue(':editorial', $infoUser['editorial']);
+			$result->bindValue(':gender', $infoUser['gender']);
+			$result->bindValue(':pages', $infoUser['pages']);
+			$result->bindValue(':year', $infoUser['year']);
+			$result->bindValue(':price', $infoUser['price']);
+			$result->bindValue(':author', $infoUser['author']);
+			$result->execute();
+	
+			array_push($data, array('status' => 'successful'));
+			Connection::disconnect($dbh);
+			
+		} catch (Exception $e) {
+			
+			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
+			array_push($data, array('status' => 'failure'));
+			
+		}
+		return $data;
+
+	}
+
 }
 
 ?>

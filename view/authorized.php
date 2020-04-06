@@ -82,7 +82,11 @@
 				<h1 id="welcome">Por favor, elija alguna de las secciones disponibles en el menu navegable.</h1>
 				<div id="pagination">
 					<button id="page-prev">Anterior</button>
-					<p id="page-current"></p>
+					<div class="new-row">
+						<button id="page-new">Añadir</button>
+						<button id="page-add-new">Listo!</button>
+						<button id="page-cancel-new">Cancelar</button>
+					</div>
 					<button id="page-next">Siguiente</button>
 				</div>
 			</div>

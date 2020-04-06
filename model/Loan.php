@@ -61,6 +61,63 @@ class Loan {
 
 	}
 
+	public static function deleteLoan ($id) {
+
+		$data = array();
+
+		try {
+
+			$dbh = Connection::connect();
+	
+			$sql = 'DELETE FROM loans WHERE id=:id';
+			$result = $dbh->prepare($sql);
+			
+			$result->bindValue(':id', $id);
+			$result->execute();
+	
+			array_push($data, array('status' => 'successful'));
+			Connection::disconnect($dbh);
+			
+		} catch (Exception $e) {
+			
+			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
+			array_push($data, array('status' => 'failure'));
+			
+		}
+		return $data;
+
+	}
+
+	public static function setLoan ($infoUser) {
+
+		$data = array();
+
+		try {
+
+			$dbh = Connection::connect();
+	
+			$sql = 'INSERT INTO loans (book_id, user_id, loan_date_in, loan_date_out) VALUES (:book, :user, :loanIn, :loanOut)';
+			$result = $dbh->prepare($sql);
+
+			$result->bindValue(':book', $infoUser['book']);																			
+			$result->bindValue(':user', $infoUser['user']);
+			$result->bindValue(':loanIn', $infoUser['loan-in']);
+			$result->bindValue(':loanOut', $infoUser['loan-out']);
+			$result->execute();
+	
+			array_push($data, array('status' => 'successful'));
+			Connection::disconnect($dbh);
+			
+		} catch (Exception $e) {
+			
+			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
+			array_push($data, array('status' => 'failure'));
+			
+		}
+		return $data;
+
+	}
+
 }
 
 ?>

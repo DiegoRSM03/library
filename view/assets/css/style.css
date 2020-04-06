@@ -405,10 +405,17 @@ header {
       #banner-authorized #pagination button:hover {
         transform: scale(1.1);
         box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.2); }
-    #banner-authorized #pagination p {
-      color: #021A25;
-      font-family: 'Roboto Black';
-      font-size: 1rem; }
+    #banner-authorized #pagination #page-new {
+      background-color: #C3A50C !important; }
+    #banner-authorized #pagination #page-add-new {
+      background-color: #546807 !important; }
+    #banner-authorized #pagination #page-cancel-new {
+      background-color: #680707 !important; }
+    #banner-authorized #pagination #page-new:hover,
+    #banner-authorized #pagination #page-add-new:hover,
+    #banner-authorized #pagination #page-cancel-new:hover {
+      transform: none !important;
+      box-shadow: 0 0 1.2rem 0.1rem rgba(0, 0, 0, 0.3); }
 
 .settings {
   display: flex;
@@ -485,7 +492,7 @@ header {
     font-family: 'Roboto Black';
     font-size: 1rem;
     width: 100%;
-    margin: 1rem 0;
+    margin: .5rem 0;
     padding: 1rem 0; }
     .settings .buttons button:hover {
       color: #021A25;

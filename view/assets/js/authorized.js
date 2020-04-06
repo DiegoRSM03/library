@@ -2,6 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	document.cookie = 'current_section=users; path=/';
 
+	//DESHABILITANDO BOTONES DE AÑADIR Y CANCELAR NUEVO USUARIO
+	document.getElementById('page-add-new').style.display = 'none';
+	document.getElementById('page-cancel-new').style.display = 'none';
+
 	//DESHABILITANDO INPUT PARA EDITAR USUARIO Y OCULTANDO BOTONES GUARDAR Y CANCELAR
 	for (let i=0 ; i<9 ; i++) {
 		document.getElementsByClassName('settings-input')[i].disabled = true;
@@ -105,6 +109,27 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 	document.getElementById('page-next').addEventListener('click', () => {
 		fetchSection(getCookie('current_section'), false, true);
+	});
+	//BOTONES PARA HABILITAR ADICIÓN DEL USUARIO, CANCELARLA, Y ENVIARLA AL CONTROLADOR
+	document.getElementById('page-new').addEventListener('click', () => {
+		fetchAddUser();
+	});
+	document.getElementById('page-add-new').addEventListener('click', () => {
+		document.getElementById('page-add-new').style.display = 'none';
+		document.getElementById('page-cancel-new').style.display = 'none';
+		document.getElementById('page-new').style.display = 'inline-block';
+		fetchReadyAdd();
+	});
+	document.getElementById('page-cancel-new').addEventListener('click', () => {
+		document.getElementById('page-add-new').style.display = 'none';
+		document.getElementById('page-cancel-new').style.display = 'none';
+		document.getElementById('page-new').style.display = 'inline-block';
+	});
+	document.getElementById('page-cancel-new').addEventListener('click', () => {
+
+		var tbody = document.getElementById('tbody');
+		tbody.removeChild(tbody.lastElementChild);
+
 	});
 
 });
@@ -229,10 +254,10 @@ async function fetchEditUser (infoUser, formId, validate) {
 			var form = new FormData();
 			
 			if (getCookie('current_section') == 'users' || getCookie('current_section') == 'books' || getCookie('current_section') == 'authors') {
-				form.append('table-name', document.getElementById(`table-name-${formId}`).value)
+				form.append('table-name', document.getElementById(`table-name-${formId}`).value);
 			}
 			if (getCookie('current_section') == 'users' || getCookie('current_section') == 'authors') {
-				form.append('table-surname', document.getElementById(`table-surname-${formId}`).value)
+				form.append('table-surname', document.getElementById(`table-surname-${formId}`).value);
 			}
 			if (getCookie('current_section') == 'users') {
 				
@@ -250,7 +275,6 @@ async function fetchEditUser (infoUser, formId, validate) {
 
 			} else if (getCookie('current_section') == 'books') {
 				
-				form.append('table-name', document.getElementById(`table-name-${formId}`).value);
 				form.append('table-editorial', document.getElementById(`table-editorial-${formId}`).value);
 				form.append('table-gender', document.getElementById(`table-gender-${formId}`).value);
 				form.append('table-pages', document.getElementById(`table-pages-${formId}`).value);
@@ -264,8 +288,6 @@ async function fetchEditUser (infoUser, formId, validate) {
 
 			} else {
 				
-				form.append('table-name', document.getElementById(`table-name-${formId}`).value);
-				form.append('table-surname', document.getElementById(`table-surname-${formId}`).value);
 				form.append('table-awards', document.getElementById(`table-awards-${formId}`).value);
 				form.append('table-country', document.getElementById(`table-country-${formId}`).value);
 				
@@ -474,7 +496,210 @@ async function fetchSection (section, prev, next) {
 
 async function fetchDeleteUser (id) {
 
+	var response = await fetch('http://localhost/5-library/controller/api/delete.php');
+	var data = await response.json();
 	
+	if (data[0].status == 'successful') {
+
+		document.getElementById('successful').innerHTML = '<p>Usuario eliminado con éxito</p>'
+		sendSignStatus('successful', 2000);
+
+		var currentPage = getCookie('page_start') - 5;
+		document.cookie = 'page_start=' + currentPage + '; path=/';
+		switch (getCookie('current_section')) {
+			
+			case 'users':
+				setTableHeaders(['ID', 'Nombre', 'Apellido', 'Domicilio', 'Provincia', 'Nacimiento', 'Contraseña']);
+			break;
+			case 'loans':
+				setTableHeaders(['ID', 'ID del Libro', 'ID del Usuario', 'Inicio del Préstamo', 'Fin del Préstamo']);
+			break;
+			case 'books':
+				setTableHeaders(['ID', 'Titulo', 'Editorial', 'Género', 'Paginas', 'Año', 'Precio', 'ID del Autor']);
+			break;
+			case 'coupons':
+				setTableHeaders(['ID', 'Precio de Descuento']);
+			break;
+			case 'authors':
+				setTableHeaders(['ID', 'Nombre', 'Apellido', 'Premios', 'País']);
+			break;
+
+		}
+		fetchSection(getCookie('current_section'), false, true)
+
+	} else {
+
+		document.getElementById('failure').innerHTML = '<p>Hubo un error al eliminar el usuario</p>'
+		sendSignStatus('failure', 2000);
+
+	}
+
+}
+
+async function fetchReadyAdd () {
+
+	var form = new FormData();
+
+	if (getCookie('current_section') == 'users' || getCookie('current_section') == 'books' || getCookie('current_section') == 'authors') {
+		form.append('table-name', document.getElementById(`table-name-new`).value);
+	}
+	if (getCookie('current_section') == 'users' || getCookie('current_section') == 'authors') {
+		form.append('table-surname', document.getElementById(`table-surname-new`).value);
+	}
+	if (getCookie('current_section') == 'users') {
+		
+		form.append('table-domicilie', document.getElementById(`table-domicilie-new`).value);
+		form.append('table-province', document.getElementById(`table-province-new`).value);
+		form.append('table-date-of-birth', document.getElementById(`table-date-of-birth-new`).value);
+		form.append('table-password', document.getElementById(`table-password-new`).value);
+
+	} else if (getCookie('current_section') == 'loans') {
+		
+		form.append('table-book', document.getElementById(`table-book-new`).value);
+		form.append('table-user', document.getElementById(`table-user-new`).value);
+		form.append('table-loan-in', document.getElementById(`table-loan-in-new`).value);
+		form.append('table-loan-out', document.getElementById(`table-loan-out-new`).value);
+
+	} else if (getCookie('current_section') == 'books') {
+		
+		form.append('table-editorial', document.getElementById(`table-editorial-new`).value);
+		form.append('table-gender', document.getElementById(`table-gender-new`).value);
+		form.append('table-pages', document.getElementById(`table-pages-new`).value);
+		form.append('table-year', document.getElementById(`table-year-new`).value);
+		form.append('table-price', document.getElementById(`table-price-new`).value);
+		form.append('table-author', document.getElementById(`table-author-new`).value);
+		
+	} else if (getCookie('current_section') == 'coupons') {
+
+		form.append('table-id', document.getElementById(`table-id-new`).value);
+		form.append('table-mount', document.getElementById(`table-mount-new`).value);
+
+	} else {
+		
+		form.append('table-awards', document.getElementById(`table-awards-new`).value);
+		form.append('table-country', document.getElementById(`table-country-new`).value);
+		
+	}
+
+	var response = await fetch('http://localhost/5-library/controller/api/post.php', {
+		method: 'POST',
+		body: form
+	});
+	var data = await response.json();
+	
+	if (data[0].status == 'successful') {
+
+		document.getElementById('successful').innerHTML = '<p>Registro añadido con éxito</p>'
+		sendSignStatus('successful', 2000);
+
+	} else {
+
+		document.getElementById('failure').innerHTML = '<p>Hubo un error al añadir el nuevo usuario</p>'
+		sendSignStatus('failure', 2000);
+
+	}
+
+	fetchSection(getCookie('current_section'), false, false);
+
+}
+
+function fetchAddUser () {
+
+	document.getElementById('page-new').style.display = 'none';
+	document.getElementById('page-add-new').style.display = 'inline-block';
+	document.getElementById('page-cancel-new').style.display = 'inline-block';
+
+	var tbody = document.getElementById('tbody');
+	var trNew = document.createElement('tr');
+	trNew.setAttribute('id', 'tr-new');
+
+	var tdId = document.createElement('td');
+	if (getCookie('current_section') == 'coupons') {
+		tdId.innerHTML = `<input id="table-id-new" type="text" placeholder="Id Cupón">`
+	} else {
+		tdId.innerHTML = 'X';
+	}
+	trNew.appendChild(tdId);
+
+	if (getCookie('current_section') == 'users' || getCookie('current_section') == 'books' || getCookie('current_section') == 'authors') {
+		var tdName = document.createElement('td');
+		tdName.innerHTML = `<input id="table-name-new" class="table-name-users" type="text" placeholder="Nombre">`;
+		trNew.appendChild(tdName);
+	}
+	if (getCookie('current_section') == 'users' || getCookie('current_section') == 'authors') {
+		var tdSurname = document.createElement('td');
+		tdSurname.innerHTML = `<input id="table-surname-new" class="table-surname" type="text" placeholder="Apellido">`;
+		trNew.appendChild(tdSurname);
+	}
+	if (getCookie('current_section') == 'users') {
+		
+		var tdDomicilie = document.createElement('td');
+		tdDomicilie.innerHTML = `<input id="table-domicilie-new" class="table-domicilie" type="text" placeholder="Domicilio">`;
+		trNew.appendChild(tdDomicilie);
+		var tdProvince = document.createElement('td');
+		tdProvince.innerHTML = `<input id="table-province-new" class="table-province" type="text" placeholder="Provincia">`;
+		trNew.appendChild(tdProvince);
+		var tdDateOfBirth = document.createElement('td');
+		tdDateOfBirth.innerHTML = `<input id="table-date-of-birth-new" class="table-date-of-birth"type="text" placeholder="Nacimiento">`;
+		trNew.appendChild(tdDateOfBirth);
+		var tdPassword = document.createElement('td');
+		tdPassword.innerHTML = `<input id="table-password-new" class="table-password" type="text" placeholder="Contraseña">`;
+		trNew.appendChild(tdPassword);
+
+	} else if (getCookie('current_section') == 'loans') {
+		
+		var tdIdBook = document.createElement('td');
+		tdIdBook.innerHTML = `<input id="table-book-new" class="table-book" type="text" placeholder="Id Libro">`;
+		trNew.appendChild(tdIdBook);
+		var tdIdUser = document.createElement('td');
+		tdIdUser.innerHTML = `<input id="table-user-new" class="table-user" type="text" placeholder="Id Usuario">`;
+		trNew.appendChild(tdIdUser);
+		var tdLoanIn = document.createElement('td');
+		tdLoanIn.innerHTML = `<input id="table-loan-in-new" class="table-loan-in" type="text" placeholder="Fecha de entrada">`;
+		trNew.appendChild(tdLoanIn);
+		var tdLoanOut = document.createElement('td');
+		tdLoanOut.innerHTML = `<input id="table-loan-out-new" class="table-loan-out" type="text" placeholder="Fecha de vencimiento">`;
+		trNew.appendChild(tdLoanOut);
+
+	} else if (getCookie('current_section') == 'books') {
+		
+		var tdEditorial = document.createElement('td');
+		tdEditorial.innerHTML = `<input id="table-editorial-new" class="table-editorial" type="text" placeholder="Editorial">`;
+		trNew.appendChild(tdEditorial);
+		var tdGender = document.createElement('td');
+		tdGender.innerHTML = `<input id="table-gender-new" class="table-gender" type="text" placeholder="Género">`;
+		trNew.appendChild(tdGender);
+		var tdPages = document.createElement('td');
+		tdPages.innerHTML = `<input id="table-pages-new" class="table-pages" type="text" placeholder="Páginas">`;
+		trNew.appendChild(tdPages);
+		var tdYear = document.createElement('td');
+		tdYear.innerHTML = `<input id="table-year-new" class="table-year" type="text" placeholder="Año">`;
+		trNew.appendChild(tdYear);
+		var tdPrice = document.createElement('td');
+		tdPrice.innerHTML = `<input id="table-price-new" class="table-price" type="text" placeholder="Precio">`;
+		trNew.appendChild(tdPrice);
+		var tdAuthor = document.createElement('td');
+		tdAuthor.innerHTML = `<input id="table-author-new" class="table-author" type="text" placeholder="Id Autor">`;
+		trNew.appendChild(tdAuthor);
+		
+	} else if (getCookie('current_section') == 'coupons') {
+		
+		var tdMount = document.createElement('td');
+		tdMount.innerHTML = `<input id="table-mount-new" class="table-mount" type="text" placeholder="Monto">`;
+		trNew.appendChild(tdMount);
+
+	} else {
+
+		var tdAwards = document.createElement('td');
+		tdAwards.innerHTML = `<input id="table-awards-new" class="table-awards" type="text" placeholder="Premios">`;
+		trNew.appendChild(tdAwards);
+		var tdCountry = document.createElement('td');
+		tdCountry.innerHTML = `<input id="table-country-new" class="table-country" type="text" placeholder="País">`;
+		trNew.appendChild(tdCountry);
+		
+	}
+
+	tbody.appendChild(trNew);
 
 }
 
@@ -516,6 +741,7 @@ function tableEdit (id) {
 
 function tableDelete (id) {
 	
+	document.cookie = 'current_id=' + id + '; path=/';
 	var warning = document.getElementById('warning');
 
 	warning.innerHTML = `<p>ADVERTENCIA: El registro cuyo numero de ID es ${id} será borrado permanentemente</p>`;
@@ -523,6 +749,7 @@ function tableDelete (id) {
 	warning.innerHTML = warning.innerHTML + '<button id="delete-cancel">Cancelar</button>';
 
 	document.getElementById('delete-accept').addEventListener('click', () => {
+		warning.style.transform = 'translateY(-100%)';
 		fetchDeleteUser(id);
 	});
 	document.getElementById('delete-cancel').addEventListener('click', () => {

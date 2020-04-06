@@ -58,6 +58,61 @@ class Coupon {
 
 	}
 
+	public static function deleteCoupon ($id) {
+
+		$data = array();
+
+		try {
+
+			$dbh = Connection::connect();
+	
+			$sql = 'DELETE FROM coupons WHERE id=:id';
+			$result = $dbh->prepare($sql);
+			
+			$result->bindValue(':id', $id);
+			$result->execute();
+	
+			array_push($data, array('status' => 'successful'));
+			Connection::disconnect($dbh);
+			
+		} catch (Exception $e) {
+			
+			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
+			array_push($data, array('status' => 'failure'));
+			
+		}
+		return $data;
+
+	}
+
+	public static function setCoupon ($infoUser) {
+
+		$data = array();
+
+		try {
+
+			$dbh = Connection::connect();
+	
+			$sql = 'INSERT INTO coupons VALUES (:id, :mount)';
+			$result = $dbh->prepare($sql);
+
+			$result->bindValue(':id', $infoUser['id']);	
+			$result->bindValue(':mount', $infoUser['mount']);	
+			$result->execute();
+	
+			array_push($data, array('status' => 'successful'));
+			Connection::disconnect($dbh);
+			
+		} catch (Exception $e) {
+			
+			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
+			array_push($data, array('status' => 'failure'));
+			
+		}
+		return $data;
+
+	}
+
 }
 
 ?>

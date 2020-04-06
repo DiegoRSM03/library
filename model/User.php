@@ -153,6 +153,65 @@ class User {
 
 	}
 
+	public static function deleteUser ($id) {
+
+		$data = array();
+
+		try {
+
+			$dbh = Connection::connect();
+	
+			$sql = 'DELETE FROM users WHERE id=:id';
+			$result = $dbh->prepare($sql);
+			
+			$result->bindValue(':id', $id);
+			$result->execute();
+	
+			array_push($data, array('status' => 'successful'));
+			Connection::disconnect($dbh);
+			
+		} catch (Exception $e) {
+			
+			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
+			array_push($data, array('status' => 'failure'));
+			
+		}
+		return $data;
+
+	}
+
+	public static function addUser ($infoUser) {
+
+		$data = array();
+
+		try {
+
+			$dbh = Connection::connect();
+	
+			$sql = 'INSERT INTO users (name, surname, domicilie, province, date_of_birth, password) VALUES (:name, :surname, :domicilie, :province, :dateOfBirth, :password)';
+			$result = $dbh->prepare($sql);
+
+			$result->bindValue(':name', $infoUser['name']);																			
+			$result->bindValue(':surname', $infoUser['surname']);
+			$result->bindValue(':domicilie', $infoUser['domicilie']);
+			$result->bindValue(':province', $infoUser['province']);
+			$result->bindValue(':dateOfBirth', $infoUser['date']);
+			$result->bindValue(':password', $infoUser['password']);
+			$result->execute();
+	
+			array_push($data, array('status' => 'successful'));
+			Connection::disconnect($dbh);
+			
+		} catch (Exception $e) {
+			
+			echo "Error:" . $e->getMessage() . "<br>En linea: " . $e->getLine();
+			array_push($data, array('status' => 'failure'));
+			
+		}
+		return $data;
+
+	}
+
 }
 
 ?>
