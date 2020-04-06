@@ -22,6 +22,10 @@ switch ($_COOKIE['current_section']) {
 		require('../../model/Coupon.php');
 		echo json_encode(Coupon::getCoupons($start, $stop));
 	break;
+	case 'authors':
+		require('../../model/Author.php');
+		echo json_encode(Author::getAuthors($start, $stop));
+	break;
 }
 
 ?>

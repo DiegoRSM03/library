@@ -1,9 +1,9 @@
 <?php
 
 require_once('database/Connection.php');
-class Coupon {
+class Author {
 
-	public static function getCoupons ($start, $stop) {
+	public static function getAuthors ($start, $stop) {
 
 		$data = array();
 
@@ -11,7 +11,7 @@ class Coupon {
 
 			$dbh = Connection::connect();
 
-			$sql = "SELECT * FROM coupons LIMIT $start, $stop";
+			$sql = "SELECT * FROM authors LIMIT $start, $stop";
 			$result = $dbh->prepare($sql);
 			$result->execute();
 	
@@ -30,7 +30,7 @@ class Coupon {
 
 	}
 
-	public static function updateCoupon ($id, $newValues) {
+	public static function updateAuthor ($id, $newValues) {
 
 		$data = array();
 
@@ -38,10 +38,13 @@ class Coupon {
 
 			$dbh = Connection::connect();
 	
-			$sql = 'UPDATE coupons SET mount=:mount WHERE id=:id';
+			$sql = 'UPDATE authors SET name=:name, surname=:surname, awards=:awards, country=:country WHERE id=:id';
 			$result = $dbh->prepare($sql);
 
-			$result->bindValue(':mount', $newValues['mount']);
+			$result->bindValue(':name', $newValues['name']);
+			$result->bindValue(':surname', $newValues['surname']);
+			$result->bindValue(':awards', $newValues['awards']);
+			$result->bindValue(':country', $newValues['country']);
 			$result->bindValue(':id', $id);
 			$result->execute();
 	
@@ -58,7 +61,7 @@ class Coupon {
 
 	}
 
-	public static function deleteCoupon ($id) {
+	public static function deleteAuthor ($id) {
 
 		$data = array();
 
@@ -66,7 +69,7 @@ class Coupon {
 
 			$dbh = Connection::connect();
 	
-			$sql = 'DELETE FROM coupons WHERE id=:id';
+			$sql = 'DELETE FROM authors WHERE id=:id';
 			$result = $dbh->prepare($sql);
 			
 			$result->bindValue(':id', $id);
@@ -85,7 +88,7 @@ class Coupon {
 
 	}
 
-	public static function setCoupon ($infoUser) {
+	public static function setAuthor ($infoUser) {
 
 		$data = array();
 
@@ -93,11 +96,13 @@ class Coupon {
 
 			$dbh = Connection::connect();
 	
-			$sql = 'INSERT INTO coupons VALUES (:id, :mount)';
+			$sql = 'INSERT INTO authors (name, surname, awards, country) VALUES (:name, :surname, :awards, :country)';
 			$result = $dbh->prepare($sql);
 
-			$result->bindValue(':id', $infoUser['id']);	
-			$result->bindValue(':mount', $infoUser['mount']);	
+			$result->bindValue(':name', $infoUser['name']);																			
+			$result->bindValue(':surname', $infoUser['surname']);
+			$result->bindValue(':awards', $infoUser['awards']);
+			$result->bindValue(':country', $infoUser['country']);
 			$result->execute();
 	
 			array_push($data, array('status' => 'successful'));

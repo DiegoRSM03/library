@@ -19,7 +19,7 @@
 <body>
 	<?php 
 		require('../components/header.php'); 
-		require('sendSign.php');
+		require('../components/status.php');
 	?>
 
 	<div id="banner-sign" class="banner">
