@@ -20,7 +20,8 @@ function messagesMailStatus (element) {
 
 async function validateAndSubmit () {
 
-	messagesMailStatus('pending');
+		document.getElementById('pending').innerHTML = '<p>Solicitud tomada, aguarde un momento</p>';
+		messagesMailStatus('pending');
 
 	const mail = new FormData(document.getElementById('form-sign-contact'));
 	let response = await fetch('http://localhost/5-library/controller/mail.php', {
@@ -30,8 +31,10 @@ async function validateAndSubmit () {
 	var data = await response.json();
 	
 	if (data.status == 'ok') {
+		document.getElementById('successful').innerHTML = '<p>Mensaje enviado con éxito, se le responderá a la brevedad</p>';
 		messagesMailStatus('successful');
 	} else {
+		document.getElementById('failure').innerHTML = '<p>Hubo un error con el envío del mensaje</p>';
 		messagesMailStatus('failure');
 	}
 
