@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
 	if (localStorage.getItem('remember') == 'yes') {
-		window.location = 'http://localhost/5-library/view/authorized.php';
+		window.location = 'http://localhost/library/view/authorized.php';
 	}
 
 	//PINTANDO LA SECCION ACTUAL DEL USUARIO DEPENDIENDO SI ES SIGNIN O SIGNUP
@@ -69,7 +69,7 @@ async function fetchBackground () {
 
 async function fetchSuggestions () {
 
-	let response = await fetch('http://localhost/5-library/controller/suggestions.php', {
+	let response = await fetch('http://localhost/library/controller/suggestions.php', {
 		method: 'POST',
 		mode: 'same-origin'
 	});
@@ -108,7 +108,7 @@ async function fetchSignIn () {
 
 	if (follow) {
 		var form = new FormData(document.getElementById('form-sign-in'));
-		const response = await fetch('http://localhost/5-library/controller/sign_in.php', {
+		const response = await fetch('http://localhost/library/controller/sign_in.php', {
 			method: 'POST',
 			body: form
 		});
@@ -121,7 +121,7 @@ async function fetchSignIn () {
 				localStorage.setItem('remember', 'no');
 			}
 			document.cookie = 'id=' + id + '; path=/';
-			window.location = 'http://localhost/5-library/view/authorized.php';
+			window.location = 'http://localhost/library/view/authorized.php';
 		} else {
 			document.getElementById('failure').innerHTML = '<p>El id y contraseña ingresados no coincide</p><p>Intenta registrarte primero</p>'
 			sendSignStatus('failure', 2000);
@@ -213,14 +213,14 @@ async function fetchSignUp () {
 		sendSignStatus('successful', 2000);
 
 		var form = new FormData(document.getElementById('form-sign-up'));
-		var response = await fetch('http://localhost/5-library/controller/sign_up.php', {
+		var response = await fetch('http://localhost/library/controller/sign_up.php', {
 			method: 'POST',
 			body: form
 		});
 		var data = await response.json();
 
 		if (data[0].status == 'successful') {
-			window.location = 'http://localhost/5-library/view/sign/sign.php?sign=in';
+			window.location = 'http://localhost/library/view/sign/sign.php?sign=in';
 		} else {
 			document.getElementById('failure').innerHTML = '<p>Ocurrio un error al crear el usuario</p><p>Intentalo de nuevo</p>'
 			sendSignStatus('failure', 2000);

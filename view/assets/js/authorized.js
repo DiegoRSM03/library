@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	//SI EL USUARIO INTENTA ACCEDER SIN PASAR POR EL LOGIN
 	if (localStorage.getItem('remember') == null) {
-		window.location = 'http://localhost/5-library/index.php';
+		window.location = 'http://localhost/library/index.php';
 	} else if (localStorage.getItem('remember') == 'no') {
 		localStorage.removeItem('remember');
 	}
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	//BOTON DE CERRAR SESIÓN EN AJUSTES
 	document.getElementById('button-log-out').addEventListener('click', () => {
 		localStorage.removeItem('remember');
-		window.location = 'http://localhost/5-library/index.php';
+		window.location = 'http://localhost/library/index.php';
 	});
 
 	//PREPARANDO LAS SECCIONES PARA SER CONSULTADAS
@@ -146,7 +146,7 @@ async function fetchUserInfo () {
 		sessionStorage.setItem('settingsOn', 'yes');
 		document.getElementsByClassName('settings')[0].style.transform = 'translateX(0)';
 	
-		var response = await fetch('http://localhost/5-library/controller/user_info.php');
+		var response = await fetch('http://localhost/library/controller/user_info.php');
 		var data = await response.json();
 
 		document.getElementById('settings-id').innerHTML = data[0].id;
@@ -297,7 +297,7 @@ async function fetchEditUser (infoUser, formId, validate) {
 			var form = new FormData(document.getElementById(formId));
 		}
 		
-		var response = await fetch('http://localhost/5-library/controller/api/update.php', {
+		var response = await fetch('http://localhost/library/controller/api/update.php', {
 			method: 'POST',
 			body: form
 		});
@@ -334,7 +334,7 @@ async function fetchSection (section, prev, next) {
 		document.cookie = 'page_start=' + (parseInt(getCookie('page_start')) - 5) + '; path=/';
 	}
 
-	var response = await fetch('http://localhost/5-library/controller/api/get.php');
+	var response = await fetch('http://localhost/library/controller/api/get.php');
 	var data = await response.json();
 
 	var tableBody = document.getElementById('tbody');
@@ -496,7 +496,7 @@ async function fetchSection (section, prev, next) {
 
 async function fetchDeleteUser (id) {
 
-	var response = await fetch('http://localhost/5-library/controller/api/delete.php');
+	var response = await fetch('http://localhost/library/controller/api/delete.php');
 	var data = await response.json();
 	
 	if (data[0].status == 'successful') {
@@ -581,7 +581,7 @@ async function fetchReadyAdd () {
 		
 	}
 
-	var response = await fetch('http://localhost/5-library/controller/api/post.php', {
+	var response = await fetch('http://localhost/library/controller/api/post.php', {
 		method: 'POST',
 		body: form
 	});

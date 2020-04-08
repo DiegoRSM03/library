@@ -16,7 +16,7 @@
 	<header>
 		<h1>Biblioteca DRSM</h1>
 		<nav>
-			<a href="http://localhost/5-library"><span class="flaticon-home"></span> Inicio</a>
+			<a href="http://localhost/library"><span class="flaticon-home"></span> Inicio</a>
 			<a id="nav-users"><span class="flaticon-friends"></span> Usuarios</a>
 			<a id="nav-loans"><span class="flaticon-shopping-cart"></span> Préstamos</a>
 			<a id="nav-books"><span class="flaticon-book"></span> Libros</a>

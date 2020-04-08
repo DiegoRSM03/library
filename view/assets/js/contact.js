@@ -24,7 +24,7 @@ async function validateAndSubmit () {
 		messagesMailStatus('pending');
 
 	const mail = new FormData(document.getElementById('form-sign-contact'));
-	let response = await fetch('http://localhost/5-library/controller/mail.php', {
+	let response = await fetch('http://localhost/library/controller/mail.php', {
 		method: 'POST',
 		body: mail
 	});

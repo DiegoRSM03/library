@@ -12,7 +12,7 @@
 	if (isset($_GET['sign'])) {
 		($_GET['sign'] == 'in') ? print('<title>Inicia Sesión</title>') : print('<title>Regístrate</title>');
 	} else {
-		header('Location: http://localhost/5-library/index.php');
+		header('Location: http://localhost/library/index.php');
 	}
 	?>
 </head>
